@@ -26,3 +26,6 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Tomax ETest';
+
+$string['modulename'] = 'TET Assessment Studio Activity';
+$string['modulenameplural'] = 'TomaETests';

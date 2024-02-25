@@ -1,0 +1,9 @@
+/* Change background color of custom activity plugin icon */
+.activityiconcontainer {
+    &.modicon_tomaetest {
+        background-color: #50D69B;
+    }
+    &.other {
+        background-color: #50D69B;
+    }
+}
