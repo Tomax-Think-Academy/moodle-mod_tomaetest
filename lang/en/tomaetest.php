@@ -29,3 +29,7 @@ $string['pluginname'] = 'Tomax ETest';
 
 $string['modulename'] = 'TET Assessment Studio Activity';
 $string['modulenameplural'] = 'TomaETests';
+
+
+$string['tomaetestname'] = 'Activity Name'; // activity name header in settings
+$string['pluginadministration'] = 'Activity administration';

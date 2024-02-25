@@ -57,7 +57,6 @@ class mod_tomaetest_mod_form extends moodleform_mod {
 
         $mform->addRule('name', null, 'required', null, 'client');
         $mform->addRule('name', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
-        $mform->addHelpButton('name', 'tomaetestname', 'mod_tomaetest');
 
         // Adding the standard "intro" and "introformat" fields.
         if ($CFG->branch >= 29) {
@@ -68,8 +67,8 @@ class mod_tomaetest_mod_form extends moodleform_mod {
 
         // Adding the rest of mod_tomaetest settings, spreading all them into this fieldset
         // ... or adding more fieldsets ('header' elements) if needed for better logic.
-        $mform->addElement('static', 'label1', 'tomaetestsettings', get_string('tomaetestsettings', 'mod_tomaetest'));
-        $mform->addElement('header', 'tomaetestfieldset', get_string('tomaetestfieldset', 'mod_tomaetest'));
+        // $mform->addElement('static', 'label1', 'tomaetestsettings', get_string('tomaetestsettings', 'mod_tomaetest'));
+        // $mform->addElement('header', 'tomaetestfieldset', get_string('tomaetestfieldset', 'mod_tomaetest'));
 
         // Add standard elements.
         $this->standard_coursemodule_elements();

@@ -32,6 +32,8 @@ function tomaetest_supports($feature) {
     switch ($feature) {
         case FEATURE_MOD_INTRO:
             return true;
+        case FEATURE_MOD_PURPOSE:
+            return 'tomax';
         default:
             return null;
     }
