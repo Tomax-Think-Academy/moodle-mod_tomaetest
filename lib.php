@@ -22,16 +22,6 @@
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
- // Include necessary Moodle files
-require_once(__DIR__ . '/../../config.php');
-
-// Initialize $PAGE if it's not already defined
-global $PAGE;
-if (!isset($PAGE)) {
-    $PAGE = new moodle_page();
-}
- $PAGE->requires->css(new moodle_url('/mod/tomaetest/styles.css'));
-
 /**
  * Return if the plugin supports $feature.
  *
