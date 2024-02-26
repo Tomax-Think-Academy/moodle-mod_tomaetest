@@ -14,11 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
- * version.php - version information.
  *
- * @package    quiz_tomaetest
- * @subpackage quiz
- * @copyright  2021 Tomax ltd <roy@tomax.co.il>
+ * @package     mod_tomaetest
+ * @copyright   2024 Tomax ltd <roy@tomax.co.il>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
