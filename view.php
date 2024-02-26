@@ -24,6 +24,7 @@
 
 require(__DIR__.'/../../config.php');
 require_once(__DIR__.'/lib.php');
+require_once(__DIR__.'/classes/Utils.php');
 
 // Course module id.
 $id = optional_param('id', 0, PARAM_INT);
@@ -60,4 +61,25 @@ $PAGE->set_context($modulecontext);
 
 echo $OUTPUT->header();
 
+if (has_capability("mod/tomaetest:manage", $modulecontext)) {
+    echo "<p>can manage</p>";
+}
+if (has_capability("mod/tomaetest:preview", $modulecontext)) {
+    echo "<p>can preview</p>";
+    echo "<p>" . json_encode(tet_utils::get_course_teachers($course->id)) . "</p>";
+}
+if (has_capability("mod/tomaetest:attempt", $modulecontext)) {
+    echo "<p>can attempt</p>";
+    echo "<p>" . json_encode(tet_utils::get_course_students($course->id)) . "</p>";
+}
+
 echo $OUTPUT->footer();
+
+// if (quizaccess_tomaetest_utils::is_on_going($this->extradata["TETID"])) {
+//     $vixurl = new moodle_url('/mod/quiz/accessrule/tomaetest/openVIX.php', array('quizID' => $this->quiz->id));
+//     return "<br>
+//         <p> Make sure to install TomaETest first by <a target='_blank' href='https://setup.tomaetest.com/TomaETest/setup.html'>clicking here</a>.</p>
+//         After installation, please <a target='_blank' href='$vixurl'>Click here </a>to launch TomaETest client";
+// } else {
+//     return "Please come back in 30 minutes before the exam start date";
+// }

@@ -33,5 +33,20 @@
         <KEY NAME="fk_course" TYPE="foreign" FIELDS="course" REFTABLE="course" REFFIELDS="id" />
       </KEYS>
     </TABLE>
+    <TABLE NAME="tet_courses" COMMENT="Stores the tomaetest courses mapping.">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" />
+        <FIELD NAME="mdl_course" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"
+          COMMENT="ID of the course in moodle." />
+        <FIELD NAME="tet_course" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"
+          COMMENT="ID of the course in tet." />
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" />
+        <KEY NAME="fk_course" TYPE="foreign" FIELDS="mdl_course" REFTABLE="course" REFFIELDS="id" />
+        <KEY NAME="unique_tet" TYPE="unique" FIELDS="tet_course" />
+      </KEYS>
+    </TABLE>
+
   </TABLES>
 </XMLDB>

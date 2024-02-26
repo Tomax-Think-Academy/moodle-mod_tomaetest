@@ -22,6 +22,9 @@
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use mod_tomaetest\tet_utils;
+
+
 /**
  * Return if the plugin supports $feature.
  *
@@ -53,6 +56,13 @@ function tomaetest_supports($feature) {
 function tomaetest_add_instance($moduleinstance, $mform = null) {
     global $DB;
 
+    $res = tet_utils::create_tet_activity($moduleinstance->name, $moduleinstance->course);
+    if (!$res["success"]) {
+        throw new moodle_exception('tetgeneralerror', 'mod_tomaetest', '', '', json_encode($res));
+    }
+    $moduleinstance->tet_id = $res["data"]["examID"];
+    $moduleinstance->is_ready = 0;
+    $moduleinstance->is_finished = 0;
     $moduleinstance->timecreated = time();
 
     $id = $DB->insert_record('tomaetest', $moduleinstance);
@@ -92,6 +102,7 @@ function tomaetest_delete_instance($id) {
     if (!$exists) {
         return false;
     }
+    // TODORON: try to delete from tet first and fail if wasn't successful
 
     $DB->delete_records('tomaetest', array('id' => $id));
 
