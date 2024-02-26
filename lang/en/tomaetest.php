@@ -33,3 +33,5 @@ $string['modulenameplural'] = 'TomaETests';
 
 $string['tomaetestname'] = 'Activity Name'; // activity name header in settings
 $string['pluginadministration'] = 'Activity administration';
+
+$string['tetgeneralerror'] = 'Error from TET';

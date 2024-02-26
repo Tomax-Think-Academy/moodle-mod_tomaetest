@@ -22,7 +22,7 @@
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use mod_tomaetest\tet_utils;
+ require_once(__DIR__.'/classes/Utils.php');
 
 
 /**
@@ -57,7 +57,7 @@ function tomaetest_add_instance($moduleinstance, $mform = null) {
     global $DB;
 
     $res = tet_utils::create_tet_activity($moduleinstance->name, $moduleinstance->course);
-    if (!$res["success"]) {
+    if (!isset($res["success"]) || !$res["success"]) {
         throw new moodle_exception('tetgeneralerror', 'mod_tomaetest', '', '', json_encode($res));
     }
     $moduleinstance->tet_id = $res["data"]["examID"];

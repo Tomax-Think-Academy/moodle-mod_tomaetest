@@ -108,7 +108,7 @@ class tet_utils
 
     public static function get_course_tet_id($courseid) {
         global $DB;
-        $record = $DB->get_record_sql("SELECT tet_course from {tet_courses} where {tet_courses}.mdl_course = '?'", [$courseid]);
+        $record = $DB->get_record_sql("SELECT tet_course from {tet_courses} where {tet_courses}.mdl_course = :courseid", ["courseid" => $courseid]);
 
         return ($record != false) ? $record->tet_course : null;
     }
@@ -119,18 +119,34 @@ class tet_utils
 
     public static function upsert_tet_course($course, $user) {
         $tetcourseobject = [];
-        $tetcourseobject["CourseName"] = $course->fullname;
-        $tetcourseobject["CourseNumber"] = $course->id;
-        $tetcourseobject["CourseStartDate"] = date("d/m/Y", $course->startdate);
-        // TODORON: decide what to do if there is no end date
-        $tetcourseobject["CourseEndDate"] = (isset($course->enddate) && $course->enddate != 0) ? date("d/m/Y", $course->enddate) : null;
-        $tetcourseobject["CourseExternalID"] = "mdl-" . $course->id;
         $tetcourseobject["UserExternalID"] = tomax_utils::get_external_id_for_teacher($user);
+        $attributes = [];
+        $attributes["TETCourseName"] = $course->fullname;
+        $attributes["TETCourseNumber"] = intval($course->id);
+        $attributes["TETCourseStartDate"] = date("d/m/Y", $course->startdate);
+        // TODORON: decide what to do if there is no end date
+        $attributes["TETCourseEndDate"] = (isset($course->enddate) && $course->enddate != 0) ? date("d/m/Y", $course->enddate) : null;
+        $attributes["TETCourseExternalID"] = "mdl-" . $course->id;
         // TODORON: figure out year&term
-        $tetcourseobject["CourseTerm"] = "0";
-        $tetcourseobject["CourseYear"] = intval(date("Y", $course->startdate));
+        $attributes["TETCourseTerm"] = "0";
+        $attributes["TETCourseYear"] = intval(date("Y", $course->startdate));
+        $tetcourseobject["Attributes"] = $attributes;
 
-        return tomaetest_connection::tet_post_request("course/createCourses", ["NewCoursesAttributes" => $tetcourseobject]);
+        $res = tomaetest_connection::tet_post_request("course/createCourses", ["NewCoursesAttributes" => [$tetcourseobject]]);
+        if (!isset($res["success"]) || !$res["success"]) {
+            throw new moodle_exception('tetgeneralerror', 'mod_tomaetest', '', '', json_encode($res));
+        }
+        if(!self::get_course_tet_id($course->id)) {
+            $res = tomaetest_connection::tet_get_request("course/view", ["externalID" => "mdl-" . $course->id]);
+            if (!isset($res["success"]) || !$res["success"]) {
+                throw new moodle_exception('tetgeneralerror', 'mod_tomaetest', '', '', json_encode($res));
+            }
+            global $DB;
+            $record = [];
+            $record["mdl_course"] = $course->id;
+            $record["tet_course"] = $res["data"]["Entity"]["ID"];
+            $DB->insert_record('tet_courses', $record);
+        }
     }
 
     public static function update_tet_course_participants($courseid) {
@@ -148,12 +164,17 @@ class tet_utils
     }
 
     public static function create_tet_activity($activityname, $courseid) {
+        global $USER;
+
         $tetcourseid = self::get_course_tet_id($courseid);
         if (!isset($tetcourseid)) {
-            // TODORON:handle course creation here
+            $currentcourse = get_course($courseid);
+            self::upsert_tet_course($currentcourse, $USER);
+            $tetcourseid = self::get_course_tet_id($courseid);
         }
 
-        return tomaetest_connection::tet_post_request("exam/mdl/insert", ["CourseID" => $tetcourseid, "ActivityName" => $activityname]);
+        $res = tomaetest_connection::tet_post_request("exam/mdl/insert", ["CourseID" => $tetcourseid, "ActivityName" => $activityname]);
+        return $res;
     }
     
 

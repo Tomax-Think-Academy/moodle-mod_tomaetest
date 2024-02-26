@@ -63,6 +63,11 @@ echo $OUTPUT->header();
 
 if (has_capability("mod/tomaetest:manage", $modulecontext)) {
     echo "<p>can manage</p>";
+    $examid=$moduleinstance->tet_id;
+    $courseid=tet_utils::get_course_tet_id($course->id);
+    $location='activity-settings';
+    $url = new moodle_url('/mod/tomaetest/misc/sso.php', array('examid' => $examid, 'courseid' => $courseid, 'location' => $location));
+    echo "<a target='_blank' href='$url'>Click here to open in AS</a>";
 }
 if (has_capability("mod/tomaetest:preview", $modulecontext)) {
     echo "<p>can preview</p>";
