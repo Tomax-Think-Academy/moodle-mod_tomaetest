@@ -67,14 +67,40 @@ if (has_capability("mod/tomaetest:manage", $modulecontext)) {
     $courseid=tet_utils::get_course_tet_id($course->id);
     $location='activity-settings';
     $url = new moodle_url('/mod/tomaetest/misc/sso.php', array('examid' => $examid, 'courseid' => $courseid, 'location' => $location));
+    // TODORON: change to get_string and add to lang file
     echo "<a target='_blank' href='$url'>Click here to open in AS</a>";
 }
 if (has_capability("mod/tomaetest:preview", $modulecontext)) {
     echo "<p>can preview</p>";
+    $examid=$moduleinstance->tet_id;
+    $location='monitor';
+    if ($moduleinstance->is_ready) {
+        $url = new moodle_url('/mod/tomaetest/misc/sso.php', array('examid' => $examid, 'location' => $location));
+        // TODORON: change to get_string and add to lang file
+        echo "<a target='_blank' href='$url'>Click here to open Monitor</a>";
+    }
+    else {
+        // TODORON: change to get_string and add to lang file
+        echo "<p>Activity is not yet ready</p>";
+    }
     echo "<p>" . json_encode(tet_utils::get_course_teachers($course->id)) . "</p>";
 }
 if (has_capability("mod/tomaetest:attempt", $modulecontext)) {
     echo "<p>can attempt</p>";
+    if ($moduleinstance->is_ready && !$moduleinstance->is_closed) {
+        $examid=$moduleinstance->tet_id;
+        $vixurl = new moodle_url('/mod/tomaetest/misc/openVIX.php', array('examid' => $examid));
+        return "<br>
+            <p> Make sure to install TomaETest first by <a target='_blank' href='https://setup.tomaetest.com/TomaETest/setup.html'>clicking here</a>.</p>
+            After installation, please <a target='_blank' href='$vixurl'>Click here </a>to launch TomaETest client";
+        // $url = new moodle_url('/mod/tomaetest/misc/sso.php', array('examid' => $examid, 'location' => $location));
+        // // TODORON: change to get_string and add to lang file
+        // echo "<a target='_blank' href='$url'>Click here to open Monitor</a>";
+    }
+    else {
+        // TODORON: change to get_string and add to lang file
+        echo "<p>Activity is not yet ready</p>";
+    }
     echo "<p>" . json_encode(tet_utils::get_course_students($course->id)) . "</p>";
 }
 

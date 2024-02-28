@@ -163,7 +163,7 @@ class tet_utils
         return tomaetest_connection::tet_post_request("courseparticipant/addParticipantsToCourses", ["NewCoursesParticipants" => $parsarr]);
     }
 
-    public static function create_tet_activity($activityname, $courseid) {
+    public static function create_tet_activity($activityname, $courseid, $examid = null) {
         global $USER;
 
         $tetcourseid = self::get_course_tet_id($courseid);
@@ -172,8 +172,13 @@ class tet_utils
             self::upsert_tet_course($currentcourse, $USER);
             $tetcourseid = self::get_course_tet_id($courseid);
         }
+        // TODORON: sync course students here?
 
-        $res = tomaetest_connection::tet_post_request("exam/mdl/insert", ["CourseID" => $tetcourseid, "ActivityName" => $activityname]);
+        $payload = ["CourseID" => $tetcourseid, "ActivityName" => $activityname];
+        if (isset($examid)) {
+            $payload["ExamID"] = $examid;
+        }
+        $res = tomaetest_connection::tet_post_request("exam/mdl/insert", $payload);
         return $res;
     }
     

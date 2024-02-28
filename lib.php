@@ -64,6 +64,8 @@ function tomaetest_add_instance($moduleinstance, $mform = null) {
     $moduleinstance->is_ready = 0;
     $moduleinstance->is_finished = 0;
     $moduleinstance->timecreated = time();
+    $examlink = $res["data"]["examLink"];
+    $moduleinstance->extradata = json_encode(["TETExamLink" => $examlink]);
 
     $id = $DB->insert_record('tomaetest', $moduleinstance);
 
@@ -82,9 +84,16 @@ function tomaetest_add_instance($moduleinstance, $mform = null) {
  */
 function tomaetest_update_instance($moduleinstance, $mform = null) {
     global $DB;
-
+    
     $moduleinstance->timemodified = time();
     $moduleinstance->id = $moduleinstance->instance;
+    $activity = tet_utils::get_etest_activity($moduleinstance->instance);
+    if ($activity->name != $moduleinstance->name) {
+        $res = tet_utils::create_tet_activity($moduleinstance->name, $moduleinstance->course, $activity->tet_id);
+        if (!isset($res["success"]) || !$res["success"]) {
+            throw new moodle_exception('tetgeneralerror', 'mod_tomaetest', '', '', json_encode($res));
+        }
+    }
 
     return $DB->update_record('tomaetest', $moduleinstance);
 }
