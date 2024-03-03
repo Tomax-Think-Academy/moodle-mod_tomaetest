@@ -19,30 +19,34 @@
  * @copyright   2024 Tomax ltd <roy@tomax.co.il>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-require_once(dirname(dirname(__FILE__)) . '../../../../config.php');
+require(__DIR__.'/../../../config.php');
 require_login();
-require_once($CFG->dirroot . "/mod/quiz/accessrule/tomaetest/rule.php");
+ require_once(__DIR__.'/../classes/Utils.php');
+ require_once($CFG->dirroot . "/local/tomax/classes/Utils.php");
+require_once($CFG->dirroot . "/local/tomax/classes/TETConnection.php");
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.'); // It must be included from a Moodle page.
 }
 
 
-$quizid = isset($_GET["quizID"]) ? $_GET["quizID"] : false;
+$activityid = isset($_GET["activityid"]) ? $_GET["activityid"] : false;
+$cmid = isset($_GET["cmid"]) ? $_GET["cmid"] : false;
 
-if ($quizid === false) {
+if ($activityid === false) {
     echo 'window.close()';
 }
 
-$quiz = quizaccess_tomaetest_utils::get_etest_quiz($quizid);
-$code = $quiz->extradata["TETExamLink"];
+$activity = tet_utils::get_etest_activity($activityid);
+$code = $activity->extradata["TETExamLink"];
 
-$domain = tomaetest_connection::$config->domain;
+$domain = tomax_utils::$config->domain;
 
-$cmid = quizaccess_tomaetest_utils::get_cmid($quizid);
+if (!$cmid) {
+    $cmid = tet_utils::get_cmid($activityid);
+}
 $context = context_module::instance($cmid);
-if (has_capability("mod/quiz:attempt", $context)) {
-
+if (has_capability("mod/tomaetest:attempt", $context)) {
 
     if ($domain == "tomaxdev") {
         $code = 'dev-' . $code;
@@ -50,21 +54,18 @@ if (has_capability("mod/quiz:attempt", $context)) {
         $code = 'tst-' . $code;
     }
 
-    $coursemodule = $cmid;
-    $moodlesession = $_COOKIE['MoodleSession' . $CFG->sessioncookie];
-    $logintopanel = new moodle_url('/mod/quiz/accessrule/tomaetest/studentSSO.php',
-     array('moodleSession' => $moodlesession, "courseModule" => $coursemodule));
-    $logintopanel = urlencode($logintopanel);
-    $result = tomaetest_connection::sync_to_toma_etest_from_database($quizid);
-    $externalid = quizaccess_tomaetest_utils::get_external_id_for_participant($USER);
-    $participant = tomaetest_connection::post_request("participant/getByUserName/view", ["UserName" => $externalid]);
+    $externalid = tomax_utils::get_external_id_for_participant($USER);
+    $participant = tomaetest_connection::tet_post_request("participant/getByUserName/view", ["UserName" => $externalid]);
     if ($participant["success"]) {
-        $tokenrequest = tomaetest_connection::post_request("exam/thirdPartySSOMoodle/view",
-         ["examID" => $quiz->extradata["TETID"], "parID" => $participant["data"]]);
+        $tokenrequest = tomaetest_connection::tet_post_request(
+            "exam/thirdPartySSOMoodle/view",
+            ["examID" => $activity->tet_id, "parID" => $participant["data"]]
+        );
         if ($tokenrequest["success"]) {
             $token = $tokenrequest["data"]["token"];
             $parid = $tokenrequest["data"]["parID"];
-            $url = "vix://?examCode=$code&token=$token&parID=$parid&thirdPartyStartupURL=$logintopanel";
+            // TODORON: check why token doesn't work
+            $url = "vix://?examCode=$code&token=$token&parID=$parid";
             header("location: $url");
             exit;
         }

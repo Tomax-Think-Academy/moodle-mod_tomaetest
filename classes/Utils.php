@@ -25,6 +25,77 @@ require_once($CFG->dirroot . "/local/tomax/classes/TETConnection.php");
 
 class tet_utils
 {
+    public static function moodle_participants_to_tet_participants($moodlearray) {
+        return
+            array_map(function ($student) {
+                $newstudent = new stdClass();
+                $newstudent->TETParticipantFirstName = $student->firstname;
+                $newstudent->TETParticipantLastName = $student->lastname;
+                $newstudent->TETParticipantPhone = $student->phone1;
+                $newstudent->TETParticipantEmail = $student->email;
+                $newstudent->TETParticipantIdentity = tomax_utils::get_external_id_for_participant($student);
+                return $newstudent;
+            }, $moodlearray);
+    }
+
+    public static function moodle_users_to_tet_users($moodlearray) {
+        return array_map(function ($user) {
+            $newuser = new stdClass();
+
+            $newuser->EtestRole = "ROLE_MOODLE";
+            // TODORON: change to role based on role in moodle
+            $newuser->TETExternalID = tomax_utils::get_external_id_for_teacher($user);
+            $newuser->UserName = tomax_utils::get_external_id_for_teacher($user);
+            $newuser->TETUserLastName = $user->lastname;
+            $newuser->TETUserEmail = $user->email;
+            $newuser->TETUserFirstName = $user->firstname;
+            $newuser->TETUserPhone = $user->phone1;
+
+            return $newuser;
+        }, $moodlearray);
+    }
+
+    public static function create_tet_user($id) {
+        global $DB;
+
+        $user = $DB->get_record("user", array("id" => $id));
+        $user = static::moodle_users_to_tet_users([$user])[0];
+
+        $tetuserresponse = tomaetest_connection::tet_post_request("user/getByExternalID/view", ["ExternalID" => $user->TETExternalID]);
+
+        if (!$tetuserresponse["success"]) {
+            $sendingobject = [
+                "UserName" => $user->UserName,
+                "Attributes" => $user
+            ];
+            unset($sendingobject["Attributes"]->UserName);
+            unset($sendingobject["Attributes"]->EtestRole);
+            $tetuserresponse = tomaetest_connection::tet_post_request("user/insert", $sendingobject);
+            if (!$tetuserresponse['success']) {
+                return "Duplicate ExternalID/UserName - " . $sendingobject["UserName"] . " Please check for duplicate data.";
+            }
+            $tetuserid = $tetuserresponse["data"];
+        } else {
+            $tetuserid = $tetuserresponse["data"]["Entity"];
+        }
+        $rolename = $user->EtestRole;
+        $tetroleresponse = tomaetest_connection::tet_post_request("role/getByName/view", ["Name" => $rolename]);
+
+        if (!$tetroleresponse["success"]) {
+            return "Could not find role in TET.";
+        }
+        $roleid = $tetroleresponse["data"]["Entity"]["ID"];
+        $responseconnect = tomaetest_connection::tet_post_request("user/edit?ID=" . $tetuserid, [
+            "ID" => $tetuserid,
+            "Attributes" => new stdClass(),
+            "Roles" => ["Delete" => [], "Insert" => [$roleid]]
+        ]);
+        if (!$responseconnect["success"]) {
+            return "could not add role for user.";
+        }
+        return true;
+    }
+
     public static function get_activity_by_exam_code($code) {
         global $DB;
         $record = $DB->get_record_sql(
@@ -61,7 +132,7 @@ class tet_utils
         global $DB;
         $record = $DB->get_record_sql("SELECT {course_modules}.ID from {course_modules}
         join {modules} on module = {modules}.id
-        where {modules}.name = 'CHANGE' and {course_modules}.instance = ?", [$activityid]);
+        where {modules}.name = 'tomaetest' and {course_modules}.instance = ?", [$activityid]);
 
         return ($record != false) ? $record->id : null;
     }
@@ -72,7 +143,7 @@ class tet_utils
         $context = context_module::instance($cmid);
 
         $students = get_users_by_capability($context, "mod/tomaetest:attempt");
-        $students = tomax_utils::moodle_participants_to_tet_participants($students);
+        $students = static::moodle_participants_to_tet_participants($students);
 
         return $students;
     }
@@ -83,7 +154,7 @@ class tet_utils
         $context = context_module::instance($cmid);
 
         $teachers = get_users_by_capability($context, "mod/tomaetest:preview");
-        $teachers = tomax_utils::moodle_users_to_tet_users($teachers);
+        $teachers = static::moodle_users_to_tet_users($teachers);
 
         return $teachers;
     }
@@ -92,7 +163,7 @@ class tet_utils
         $context = context_course::instance($courseid);
 
         $students = get_users_by_capability($context, "mod/tomaetest:attempt");
-        $students = tomax_utils::moodle_participants_to_tet_participants($students);
+        $students = static::moodle_participants_to_tet_participants($students);
 
         return $students;
     }
@@ -101,7 +172,7 @@ class tet_utils
         $context = context_course::instance($courseid);
 
         $teachers = get_users_by_capability($context, "mod/tomaetest:preview");
-        $teachers = tomax_utils::moodle_users_to_tet_users($teachers);
+        $teachers = static::moodle_users_to_tet_users($teachers);
 
         return $teachers;
     }
@@ -149,21 +220,36 @@ class tet_utils
         }
     }
 
-    public static function update_tet_course_participants($courseid) {
+    public static function upsert_tet_course_participants($courseid) {
         $tetcourseexternalid = "mdl-" . $courseid;
         $parsarr = [];
         $participants = self::get_course_students($courseid);
         foreach ($participants as $key => $par) {
             $obj = [];
             $obj["username"] = $par->TETParticipantIdentity;
-            $obj["courseExternalID"] = $tetcourseexternalid;
+            $obj["Attributes"]["TETParticipantFirstName"] = isset($par->TETParticipantFirstName) ? $par->TETParticipantFirstName : "";
+            $obj["Attributes"]["TETParticipantLastName"] = isset($par->TETParticipantLastName) ? $par->TETParticipantLastName : "";
+            $obj["Attributes"]["TETParticipantEmail"] = isset($par->TETParticipantEmail) ? $par->TETParticipantEmail : "";
+            $obj["Attributes"]["TETParticipantPhone"] = isset($par->TETParticipantPhone) ? $par->TETParticipantPhone : "";
             array_push($parsarr, $obj);
         }
 
-        return tomaetest_connection::tet_post_request("courseparticipant/addParticipantsToCourses", ["NewCoursesParticipants" => $parsarr]);
+        $res = tomaetest_connection::tet_post_request("courseparticipant/mdl/addParticipantsToCourse",
+            ["CourseExternalID" => $tetcourseexternalid, "CoursesParticipants" => $parsarr]
+        );
+        if (isset($res["success"]) && $res["success"]) {
+            return true;
+        }
+        else {
+            if (!isset($res["success"]) || !$res["success"]) {
+                throw new moodle_exception('tetgeneralerror', 'mod_tomaetest', '', '', json_encode($res));
+            }
+            // TODORON: add better error handling
+            return false;
+        }
     }
 
-    public static function create_tet_activity($activityname, $courseid, $examid = null) {
+    public static function create_tet_activity($activityname, $courseid, $tetid = null) {
         global $USER;
 
         $tetcourseid = self::get_course_tet_id($courseid);
@@ -172,13 +258,19 @@ class tet_utils
             self::upsert_tet_course($currentcourse, $USER);
             $tetcourseid = self::get_course_tet_id($courseid);
         }
-        // TODORON: sync course students here?
+        self::upsert_tet_course_participants($courseid);
 
         $payload = ["CourseID" => $tetcourseid, "ActivityName" => $activityname];
-        if (isset($examid)) {
-            $payload["ExamID"] = $examid;
+        if (isset($tetid)) {
+            $payload["ExamID"] = $tetid;
         }
         $res = tomaetest_connection::tet_post_request("exam/mdl/insert", $payload);
+        return $res;
+    }
+
+    public static function delete_tet_activity($tetid) {
+        $payload = ["ActivityID" => $tetid];
+        $res = tomaetest_connection::tet_post_request("course/mdl/deleteCourseActivity", $payload);
         return $res;
     }
     
