@@ -196,7 +196,7 @@ class tet_utils
         $attributes["TETCourseNumber"] = intval($course->id);
         $attributes["TETCourseStartDate"] = date("d/m/Y", $course->startdate);
         // TODORON: decide what to do if there is no end date
-        $attributes["TETCourseEndDate"] = (isset($course->enddate) && $course->enddate != 0) ? date("d/m/Y", $course->enddate) : null;
+        $attributes["TETCourseEndDate"] = (isset($course->enddate) && $course->enddate != 0) ? date("d/m/Y", $course->enddate) : "";
         $attributes["TETCourseExternalID"] = "mdl-" . $course->id;
         // TODORON: figure out year&term
         $attributes["TETCourseTerm"] = "0";
