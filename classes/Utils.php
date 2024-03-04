@@ -274,31 +274,4 @@ class tet_utils
         return $res;
     }
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public static function get_moodle_allowed_integrity_management($userid = null) {
-        global $DB;
-        $systemcontext = context_system::instance();
-        $teachers = [];
-        if (has_capability("mod/quizaccess_tomaetest:viewtomaetestair", $systemcontext, $userid)) {
-            array_push($teachers, $DB->get_record('user', array("id" => $userid)));
-        }
-        return $teachers;
-    }
- 
 }

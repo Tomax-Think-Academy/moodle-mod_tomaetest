@@ -21,8 +21,8 @@
  */
 require(__DIR__.'/../../../config.php');
 require_login();
- require_once(__DIR__.'/../classes/Utils.php');
- require_once($CFG->dirroot . "/local/tomax/classes/Utils.php");
+require_once(__DIR__.'/../classes/Utils.php');
+require_once($CFG->dirroot . "/local/tomax/classes/Utils.php");
 require_once($CFG->dirroot . "/local/tomax/classes/TETConnection.php");
 
 if (!defined('MOODLE_INTERNAL')) {
