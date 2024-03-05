@@ -208,7 +208,7 @@ class tet_utils
             throw new moodle_exception('tetgeneralerror', 'mod_tomaetest', '', '', json_encode($res));
         }
         if(!self::get_course_tet_id($course->id)) {
-            $res = tomaetest_connection::tet_get_request("course/view", ["externalID" => "mdl-" . $course->id]);
+            $res = tomaetest_connection::tet_get_request("course/view", ["ExternalID" => "mdl-" . $course->id]);
             if (!isset($res["success"]) || !$res["success"]) {
                 throw new moodle_exception('tetgeneralerror', 'mod_tomaetest', '', '', json_encode($res));
             }
