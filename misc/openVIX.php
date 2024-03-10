@@ -64,7 +64,6 @@ if (has_capability("mod/tomaetest:attempt", $context)) {
         if ($tokenrequest["success"]) {
             $token = $tokenrequest["data"]["token"];
             $parid = $tokenrequest["data"]["parID"];
-            // TODORON: check why token doesn't work
             $url = "vix://?examCode=$code&token=$token&parID=$parid";
             header("location: $url");
             exit;

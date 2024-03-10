@@ -69,20 +69,6 @@ function tomaetest_add_instance($moduleinstance, $mform = null) {
 
     $id = $DB->insert_record('tomaetest', $moduleinstance);
 
-    // TODORON: redirect doesn't work because pop-ups are blocked
-    // $examid=$moduleinstance->tet_id;
-    // $courseid=tet_utils::get_course_tet_id($moduleinstance->course);
-    // $location='activity-settings';
-    // $url = new moodle_url('/mod/tomaetest/misc/sso.php', array('examid' => $examid, 'courseid' => $courseid, 'location' => $location));
-    // echo "
-    //     <script>
-    //         const link = document.createElement('a');
-    //         link.setAttribute('href', '$url');
-    //         link.setAttribute('target', '_blank');
-    //         link.click();
-    //     </script>
-    // ";
-
     return $id;
 }
 
