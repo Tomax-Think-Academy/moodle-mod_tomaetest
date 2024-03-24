@@ -27,8 +27,8 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Tomax ETest';
 
-$string['modulename'] = 'TET Assessment Studio Activity';
-$string['modulenameplural'] = 'TomaETests';
+$string['modulename'] = 'Tomax Activity';
+$string['modulenameplural'] = 'Tomax Activities';
 
 
 $string['tomaetestname'] = 'Activity Name'; // activity name header in settings
