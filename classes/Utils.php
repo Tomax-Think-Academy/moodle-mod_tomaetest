@@ -268,7 +268,7 @@ class tet_utils
 
     public static function delete_tet_activity($tetid) {
         $payload = ["ActivityID" => $tetid];
-        $res = tomaetest_connection::tet_post_request("course/mdl/deleteCourseActivity", $payload);
+        $res = tomaetest_connection::tet_post_request("course/deleteCourseActivity", $payload);
         return $res;
     }
     
