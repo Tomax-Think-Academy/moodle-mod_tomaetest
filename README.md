@@ -1,31 +1,35 @@
-# Tomax ETest #
+# Tomax ETest Activity plugin
 
-TODO Describe the plugin shortly here.
+This plugin allows the creation of a new type of activity for courses called "Tomax Activity", which will be linked to TomaETest Assessment Studio and allow students from Moodle to participate in those activities through TomaETest's VIX.
 
-TODO Provide more detailed description here.
+TODO make this overview better
 
-## Installing via uploaded ZIP file ##
+# Features
 
-1. Log in to your Moodle site as an admin and go to _Site administration >
+TODO add list here
+
+# Installation
+
+1. Make sure [Tomax local plugin](https://github.com/Tomax-Think-Academy/moodle-local_tomax?tab=readme-ov-file#tomax) is installed and configured properly
+2. Download the zip file from [TomaETest activity plugin](https://downloads.tomax.io/MoodlePlugins/ETest/TET-activity-moodle.zip)
+3. Log in to your Moodle site as an admin and go to _Site administration >
    Plugins > Install plugins_.
-2. Upload the ZIP file with the plugin code. You should only be prompted to add
-   extra details if your plugin type is not automatically detected.
-3. Check the plugin validation report and finish the installation.
+4. Upload the ZIP file with the plugin.
+5. Check the plugin validation report and finish the installation.
 
-## Installing manually ##
+# Usage
+## Creating an activity
+When adding an activity to a course choose '_Tomax Activity_', choose the activity name and then click Save and display, following that on the activity page click '_open in AS_' to continue the activity setup on Tomax Assessment Studio, once the setup is completed on AS it would shortly be updated also in Moodle and be ready to use.
 
-The plugin can be also installed by putting the contents of this directory to
+## Monitoring 
+When a TomaETest activity has been created and properly set up, you will be able to open to the monitor dashboard using the appropriate button.
 
-    {your/moodle/dirroot}/mod/tomaetest
+## Participating in an activity
+When the activity is ready to be taken, the student will have a button called “Click to launch TomaETest client”.
+After clicking, the TomaETest client will open up and he will be able to start using TomaETest.
 
-Afterwards, log in to your Moodle site as an admin and go to _Site administration >
-Notifications_ to complete the installation.
-
-Alternatively, you can run
-
-    $ php admin/cli/upgrade.php
-
-to complete the installation from the command line.
+# Dependencies
+Tomax Local plugin.
 
 ## License ##
 
