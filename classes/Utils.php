@@ -201,7 +201,7 @@ class tet_utils
         $attributes["TETCourseYear"] = intval(date("Y", $course->startdate));
         $tetcourseobject["Attributes"] = $attributes;
 
-        $res = tomaetest_connection::tet_post_request("course/createCourses", ["NewCoursesAttributes" => [$tetcourseobject]]);
+        $res = tomaetest_connection::tet_post_request("course/createCourses", ["NewCoursesAttributes" => [$tetcourseobject], "Origin" => "moodle"]);
         if (!isset($res["success"]) || !$res["success"]) {
             throw new moodle_exception('tetgeneralerror', 'mod_tomaetest', '', '', json_encode($res));
         }
