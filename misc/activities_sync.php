@@ -49,7 +49,7 @@ function check_activities_changes() {
     foreach ($coursesids as $courseid) {
         $tetcourseid = tet_utils::get_course_tet_id($courseid);
         // TODORON: handle case of no tetcourseid
-        $res = tomaetest_connection::tet_get_request("course/getCourseActivities", ["CourseID" => $tetcourseid]);
+        $res = tet_connection::tet_get_request("course/getCourseActivities", ["CourseID" => $tetcourseid]);
         if (isset($res["success"]) && $res["success"]) {
             $activities = $res['data']['activities'];
             foreach ($activities as $activity) {

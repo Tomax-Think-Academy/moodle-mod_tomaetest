@@ -32,7 +32,7 @@ $examid = isset($_GET["examid"]) ? $_GET["examid"] : null;
 $courseid = isset($_GET["courseid"]) ? $_GET["courseid"] : null;
 $location = isset($_GET["location"]) ? $_GET["location"] : null;
 
-$result = tomaetest_connection::sso($userid, $examid, $courseid, $location);
+$result = tet_connection::sso($userid, $examid, $courseid, $location);
 
 if ($result === false) {
     // Check if admin privileges.

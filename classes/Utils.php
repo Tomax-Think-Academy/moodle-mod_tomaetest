@@ -61,7 +61,7 @@ class tet_utils
         $user = $DB->get_record("user", array("id" => $id));
         $user = static::moodle_users_to_tet_users([$user])[0];
 
-        $tetuserresponse = tomaetest_connection::tet_post_request("user/getByExternalID/view", ["ExternalID" => $user->TETExternalID]);
+        $tetuserresponse = tet_connection::tet_post_request("user/getByExternalID/view", ["ExternalID" => $user->TETExternalID]);
 
         if (!$tetuserresponse["success"]) {
             $sendingobject = [
@@ -70,7 +70,7 @@ class tet_utils
             ];
             unset($sendingobject["Attributes"]->UserName);
             unset($sendingobject["Attributes"]->EtestRole);
-            $tetuserresponse = tomaetest_connection::tet_post_request("user/insert", $sendingobject);
+            $tetuserresponse = tet_connection::tet_post_request("user/insert", $sendingobject);
             if (!$tetuserresponse['success']) {
                 return "Duplicate ExternalID/UserName - " . $sendingobject["UserName"] . " Please check for duplicate data.";
             }
@@ -79,13 +79,13 @@ class tet_utils
             $tetuserid = $tetuserresponse["data"]["Entity"];
         }
         $rolename = $user->EtestRole;
-        $tetroleresponse = tomaetest_connection::tet_post_request("role/getByName/view", ["Name" => $rolename]);
+        $tetroleresponse = tet_connection::tet_post_request("role/getByName/view", ["Name" => $rolename]);
 
         if (!$tetroleresponse["success"]) {
             return "Could not find role in TET.";
         }
         $roleid = $tetroleresponse["data"]["Entity"]["ID"];
-        $responseconnect = tomaetest_connection::tet_post_request("user/edit?ID=" . $tetuserid, [
+        $responseconnect = tet_connection::tet_post_request("user/edit?ID=" . $tetuserid, [
             "ID" => $tetuserid,
             "Attributes" => new stdClass(),
             "Roles" => ["Delete" => [], "Insert" => [$roleid]]
@@ -201,12 +201,12 @@ class tet_utils
         $attributes["TETCourseYear"] = intval(date("Y", $course->startdate));
         $tetcourseobject["Attributes"] = $attributes;
 
-        $res = tomaetest_connection::tet_post_request("course/createCourses", ["NewCoursesAttributes" => [$tetcourseobject], "Type" => "moodle"]);
+        $res = tet_connection::tet_post_request("course/createCourses", ["NewCoursesAttributes" => [$tetcourseobject], "Type" => "moodle"]);
         if (!isset($res["success"]) || !$res["success"]) {
             throw new moodle_exception('tetgeneralerror', 'mod_tomaetest', '', '', json_encode($res));
         }
         if(!self::get_course_tet_id($course->id)) {
-            $res = tomaetest_connection::tet_get_request("course/view", ["ExternalID" => "mdl-" . $course->id]);
+            $res = tet_connection::tet_get_request("course/view", ["ExternalID" => "mdl-" . $course->id]);
             if (!isset($res["success"]) || !$res["success"]) {
                 throw new moodle_exception('tetgeneralerror', 'mod_tomaetest', '', '', json_encode($res));
             }
@@ -232,7 +232,7 @@ class tet_utils
             array_push($parsarr, $obj);
         }
 
-        $res = tomaetest_connection::tet_post_request("courseparticipant/mdl/addParticipantsToCourse",
+        $res = tet_connection::tet_post_request("courseparticipant/mdl/addParticipantsToCourse",
             ["CourseExternalID" => $tetcourseexternalid, "CoursesParticipants" => $parsarr]
         );
         if (isset($res["success"]) && $res["success"]) {
@@ -262,13 +262,13 @@ class tet_utils
         if (isset($tetid)) {
             $payload["ExamID"] = $tetid;
         }
-        $res = tomaetest_connection::tet_post_request("exam/mdl/insert", $payload);
+        $res = tet_connection::tet_post_request("exam/mdl/insert", $payload);
         return $res;
     }
 
     public static function delete_tet_activity($tetid) {
         $payload = ["ActivityID" => $tetid];
-        $res = tomaetest_connection::tet_post_request("course/deleteCourseActivity", $payload);
+        $res = tet_connection::tet_post_request("course/deleteCourseActivity", $payload);
         return $res;
     }
     

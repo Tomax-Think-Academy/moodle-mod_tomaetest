@@ -55,9 +55,9 @@ if (has_capability("mod/tomaetest:attempt", $context)) {
     }
 
     $externalid = tomax_utils::get_external_id_for_participant($USER);
-    $participant = tomaetest_connection::tet_post_request("participant/getByUserName/view", ["UserName" => $externalid]);
+    $participant = tet_connection::tet_post_request("participant/getByUserName/view", ["UserName" => $externalid]);
     if ($participant["success"]) {
-        $tokenrequest = tomaetest_connection::tet_post_request(
+        $tokenrequest = tet_connection::tet_post_request(
             "exam/thirdPartySSOMoodle/view",
             ["examID" => $activity->tet_id, "parID" => $participant["data"]]
         );
