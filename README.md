@@ -1,8 +1,7 @@
 # Tomax ETest Activity plugin
 
-This plugin allows the creation of a new type of activity for courses called "Tomax Activity", which will be linked to TomaETest Assessment Studio and allow students from Moodle to participate in those activities through TomaETest's VIX.
+Tomax TomaETest Assessment Studio is part of Tomax VIX platform  empowering users to develop formative assessment activities. This plugin seamlessly interacts with TomaETest Assessment Studio, facilitating the creation, modification, and monitoring of formative assessment tasks.
 
-TODO make this overview better
 
 # Features
 
@@ -21,7 +20,7 @@ TODO add list here
 ## Creating an activity
 When adding an activity to a course choose '_Tomax Activity_', choose the activity name and then click Save and display, following that on the activity page click '_open in AS_' to continue the activity setup on Tomax Assessment Studio, once the setup is completed on AS it would shortly be updated also in Moodle and be ready to use.
 
-## Monitoring 
+## Monitoring
 When a TomaETest activity has been created and properly set up, you will be able to open to the monitor dashboard using the appropriate button.
 
 ## Participating in an activity
@@ -31,18 +30,8 @@ After clicking, the TomaETest client will open up and he will be able to start u
 # Dependencies
 Tomax Local plugin.
 
-## License ##
-
-2024 Tomax ltd <roy@tomax.co.il>
-
-This program is free software: you can redistribute it and/or modify it under
-the terms of the GNU General Public License as published by the Free Software
-Foundation, either version 3 of the License, or (at your option) any later
-version.
-
-This program is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along with
-this program.  If not, see <https://www.gnu.org/licenses/>.
+# Subscription
+This plugin integrates with Tomax TomaETest Assessment Studio solution which is provided as a subscription.
+Receive a free trial with full access to all Tomax’s features.
+For more information please contact us at sales@tomaxltd.com
+for experiencing with a demo version you can use
