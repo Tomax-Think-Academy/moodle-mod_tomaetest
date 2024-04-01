@@ -273,3 +273,10 @@ class tet_utils
     }
     
 }
+
+function log_and_print($msg, &$log = null) {
+    echo $msg;
+    echo "\n";
+
+    $log .= "\n" . $msg;
+}

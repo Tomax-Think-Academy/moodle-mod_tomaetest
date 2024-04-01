@@ -27,13 +27,6 @@ global $DB, $CFG;
 require_once(__DIR__.'/../classes/Utils.php');
 
 
-function log_and_print($msg, &$log = null) {
-    echo $msg;
-    echo "\n";
-
-    $log .= "\n" . $msg;
-}
-
 function check_activities_changes() {
     global $DB;
     $relevantactivities = $DB->get_records_sql("SELECT * FROM {tomaetest} WHERE is_ready=0 OR is_finished=0");

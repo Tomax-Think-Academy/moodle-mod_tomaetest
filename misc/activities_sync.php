@@ -28,13 +28,6 @@ require_once(__DIR__.'/../classes/Utils.php');
 require_once($CFG->dirroot . "/local/tomax/classes/TETConnection.php");
 
 
-function log_and_print($msg, &$log = null) {
-    echo $msg;
-    echo "\n";
-
-    $log .= "\n" . $msg;
-}
-
 function check_activities_changes() {
     global $DB;
     $relevantactivities = $DB->get_records_sql("SELECT * FROM {tomaetest} WHERE is_ready=0 OR is_finished=0");
@@ -44,12 +37,14 @@ function check_activities_changes() {
             array_push($coursesids, $activity->course);
         }
     }
+    mtrace("courses IDs: ". implode(", ", $coursesids));
     $markready = array();
     $markfinished = array();
     foreach ($coursesids as $courseid) {
         $tetcourseid = tet_utils::get_course_tet_id($courseid);
         // TODORON: handle case of no tetcourseid
         $res = tet_connection::tet_get_request("course/getCourseActivities", ["CourseID" => $tetcourseid]);
+        mtrace("res for " . $courseid .  ": " . json_encode($res));
         if (isset($res["success"]) && $res["success"]) {
             $activities = $res['data']['activities'];
             foreach ($activities as $activity) {
@@ -62,6 +57,8 @@ function check_activities_changes() {
             }
         }
     }
+    mtrace("mark ready: ". implode(", ", $markready));
+    mtrace("mark finished: ". implode(", ", $markfinished));
     if (!empty($markready)) {
         $readyids = "(" . implode(', ', $markready) . ")";
         $markreadysql = "UPDATE {tomaetest} SET is_ready=1 WHERE tet_id IN $readyids";

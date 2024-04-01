@@ -14,41 +14,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
- * Task schedule configuration for the mod_tomaetest plugin.
  *
  * @package     mod_tomaetest
  * @copyright   2024 Tomax ltd <roy@tomax.co.il>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace mod_tomaetest\task;
 
-defined('MOODLE_INTERNAL') || die();
-$tasks = array(
-    array(
-        'classname' => 'mod_tomaetest\task\sync_tet_activities',
-        'blocking' => 0,
-        'minute' => '*/10',
-        'hour' => '*',
-        'day' => '*',
-        'dayofweek' => '*',
-        'month' => '*'
-    ),
-    array(
-        'classname' => 'mod_tomaetest\task\sync_tet_participants',
-        'blocking' => 0,
-        'minute' => '0',
-        'hour' => '*/3',
-        'day' => '*',
-        'dayofweek' => '*',
-        'month' => '*'
-    ),
-    array(
-        'classname' => 'mod_tomaetest\task\sync_tg_grades',
-        'blocking' => 0,
-        'minute' => '0',
-        'hour' => '*/1',
-        'day' => '*',
-        'dayofweek' => '*',
-        'month' => '*'
-    ),
-);
+class sync_tg_grades extends \core\task\scheduled_task
+{
+    public function get_name()
+    {
+        return 'syncTGGrades';
+    }
+
+    public function execute()
+    {
+        global $CFG;
+        require_once($CFG->dirroot . "/mod/tomaetest/misc/grades_sync.php");
+    }
+}
