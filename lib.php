@@ -186,10 +186,10 @@ function tomaetest_update_grades($activity, $userid = 0, $nullifnone = true) {
     global $CFG;
     require_once($CFG->libdir . '/gradelib.php');
 
-    if ($activity->grade == 0) {
+    if (isset($activity->grade) && $activity->grade == 0) {
         return tomaetest_grade_item_update($activity);
 
-    } else if ($grades = tomaetest_get_user_grades($activity, $userid)) {
+    } else if ($grades = tomaetest_get_user_grades($activity->id, $userid)) {
         return tomaetest_grade_item_update($activity, $grades);
 
     } else if ($userid && $nullifnone) {
@@ -231,7 +231,7 @@ function tomaetest_grade_item_update($activity, $grades = null) {
             // Saving the activity form, and cm not yet updated in the database.
             $params['hidden'] = !$activity->visible;
         } else {
-            $cm = get_coursemodule_from_instance('activity', $activity->id);
+            $cm = get_coursemodule_from_instance('tomaetest', $activity->id);
             $params['hidden'] = !$cm->visible;
         }
     }

@@ -45,8 +45,8 @@ $tasks = array(
     array(
         'classname' => 'mod_tomaetest\task\sync_tg_grades',
         'blocking' => 0,
-        'minute' => '0',
-        'hour' => '*/1',
+        'minute' => '*/10',
+        'hour' => '*',
         'day' => '*',
         'dayofweek' => '*',
         'month' => '*'

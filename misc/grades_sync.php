@@ -42,24 +42,27 @@ function get_activities_to_check() {
 
 function check_activity($activityid, $externalid) {
     $response = tg_connection::tg_get_request("MoodleGetExamDetails", [$externalid]);
-    if ($response->Response == "Failed") {
-        mtrace($response);
+    mtrace("response for $externalid: " . json_encode($response));
+    if (!isset($response["Response"]) || $response["Response"] == "Failed") {
+        return;
     }
-    foreach ($response->CourseParticipant as $value) {
-        if ($value->ParGrade != "" || isset($value->ParGrade) || $value->ParGradeNoFactor != "" || isset($value->ParGradeNoFactor)) {
-            $currentuser = tomax_utils::get_participant_by_external_id($value->ParId);
-            if ($currentuser && $value->ParExamStatus == 2) { // status - 'checked'
-                $userid = $currentuser->id;
-                if (isset($value->ParGrade)) {
-                    set_grade($activityid, $userid, $value->ParGrade);
-                } else {
-                    set_grade($activityid, $userid, $value->ParGradeNoFactor);
+    if (isset($response["CourseParticipant"])) {
+        foreach ($response["CourseParticipant"] as $value) {
+            if ($value["ParGrade"] != "" || isset($value["ParGrade"]) || $value["ParGradeNoFactor"] != "" || isset($value["ParGradeNoFactor"])) {
+                $currentuser = tomax_utils::get_participant_by_external_id($value["ParId"]);
+                if ($currentuser && $value["ParExamStatus"] == 2) { // status - 'checked'
+                    $userid = $currentuser->id;
+                    if (isset($value["ParGrade"])) {
+                        set_grade($activityid, $userid, $value["ParGrade"]);
+                    } else {
+                        set_grade($activityid, $userid, $value["ParGradeNoFactor"]);
+                    }
                 }
             }
         }
     }
-    if ($response->GetExamDetail->ExamStatus == "3") { // status - 'published'
-        global $DB;
+    if ($response["GetExamDetail"]["ExamStatus"] == "3") { // status - 'published'
+        global $DB, $CFG;
         require_once($CFG->dirroot . '/mod/tomaetest/lib.php');
         $activity = $DB->get_record('tomaetest', array('id' => $activityid));
         $updatestatus = tomaetest_update_grades($activity);
