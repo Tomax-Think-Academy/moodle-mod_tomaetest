@@ -63,6 +63,7 @@ class tet_utils
 
         $tetuserresponse = tet_connection::tet_post_request("user/getByExternalID/view", ["ExternalID" => $user->TETExternalID]);
 
+        $rolename = $user->EtestRole;
         if (!$tetuserresponse["success"]) {
             $sendingobject = [
                 "UserName" => $user->UserName,
@@ -78,7 +79,6 @@ class tet_utils
         } else {
             $tetuserid = $tetuserresponse["data"]["Entity"];
         }
-        $rolename = $user->EtestRole;
         $tetroleresponse = tet_connection::tet_post_request("role/getByName/view", ["Name" => $rolename]);
 
         if (!$tetroleresponse["success"]) {
@@ -201,6 +201,10 @@ class tet_utils
         $attributes["TETCourseYear"] = intval(date("Y", $course->startdate));
         $tetcourseobject["Attributes"] = $attributes;
 
+        $res = self::create_tet_user($user->id);
+        if ($res != true) {
+            throw new moodle_exception('tetgeneralerror', 'mod_tomaetest', '', '', $res);
+        }
         $res = tet_connection::tet_post_request("course/createCourses", ["NewCoursesAttributes" => [$tetcourseobject], "Type" => "moodle"]);
         if (!isset($res["success"]) || !$res["success"]) {
             throw new moodle_exception('tetgeneralerror', 'mod_tomaetest', '', '', json_encode($res));
@@ -247,6 +251,10 @@ class tet_utils
         }
     }
 
+    public static function upsert_tet_course_users($courseid) {
+        // TODORON: add required logic here
+    }
+
     public static function create_tet_activity($activityname, $courseid, $tetid = null) {
         global $USER;
 
@@ -257,6 +265,7 @@ class tet_utils
             $tetcourseid = self::get_course_tet_id($courseid);
         }
         self::upsert_tet_course_participants($courseid);
+        // self::upsert_tet_course_users($courseid);
 
         $payload = ["CourseID" => $tetcourseid, "ActivityName" => $activityname];
         if (isset($tetid)) {

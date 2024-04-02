@@ -27,7 +27,7 @@ global $DB, $CFG;
 require_once(__DIR__.'/../classes/Utils.php');
 
 
-function check_activities_changes() {
+function update_relevant_participants() {
     global $DB;
     $relevantactivities = $DB->get_records_sql("SELECT * FROM {tomaetest} WHERE is_ready=0 OR is_finished=0");
     $coursesids = array();
@@ -42,4 +42,4 @@ function check_activities_changes() {
 }
 
 
-check_activities_changes();
+update_relevant_participants();
