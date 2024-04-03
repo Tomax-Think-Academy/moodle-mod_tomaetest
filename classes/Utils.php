@@ -22,6 +22,7 @@
 
 require_once($CFG->dirroot . "/local/tomax/classes/Utils.php");
 require_once($CFG->dirroot . "/local/tomax/classes/TETConnection.php");
+require_once($CFG->dirroot . "/local/tomax/classes/TGConnection.php");
 
 class tet_utils
 {
@@ -93,6 +94,43 @@ class tet_utils
         if (!$responseconnect["success"]) {
             return "could not add role for user.";
         }
+        return true;
+    }
+
+    public static function create_tg_user($id) {
+        global $DB;
+
+        $user = $DB->get_record("user", array("id" => $id));
+        $userexternalid = tomax_utils::get_external_id_for_teacher($user);
+        $postdata = array();
+        $postdata['teacherCodes'] = [$userexternalid];
+        $response = tg_connection::tg_post_request("GetTeacherIdMoodle", $postdata);
+        if (isset($response['Message']) && is_array($response['Message']) && !empty($response['Message'])) {
+            return true;
+        }
+        
+        $newuser = array();
+        $newuser['Email'] = $user->email;
+        $newuser['Cellular_Phone_Number'] = $user->phone1;
+        $newuser['FirstName'] = $user->firstname;
+        $newuser['LastName'] = $user->lastname;
+        $newuser['RoleID'] = 0;
+        $newuser['TeacherCode'] = $userexternalid;
+        $newuser['IsOTP'] = 0;
+        $newuser['choose'] = "insertNewUser";
+        if ($user->lang == "he") {
+            $newuser['Language'] = "עברית";
+        } else {
+            $newuser['Language'] = "English";
+        }
+        
+        $postdata = array();
+        $postdata['usersData'] = [$newuser];
+        $response = tg_connection::tg_post_request("SaveUsers", $postdata);
+
+        if (!isset($response['NumInsertNewUser']) || $response['NumInsertNewUser'] != 1) {
+            return "could not create user in TG";
+       }
         return true;
     }
 
@@ -205,6 +243,11 @@ class tet_utils
         if ($res != true) {
             throw new moodle_exception('tetgeneralerror', 'mod_tomaetest', '', '', $res);
         }
+        $res = self::create_tg_user($user->id);
+        if ($res != true) {
+            throw new moodle_exception('tggeneralerror', 'mod_tomaetest', '', '', $res);
+        }
+
         $res = tet_connection::tet_post_request("course/createCourses", ["NewCoursesAttributes" => [$tetcourseobject], "Type" => "moodle"]);
         if (!isset($res["success"]) || !$res["success"]) {
             throw new moodle_exception('tetgeneralerror', 'mod_tomaetest', '', '', json_encode($res));
