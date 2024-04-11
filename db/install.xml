@@ -25,6 +25,8 @@
           COMMENT="specifies whether setup on TET was finished (0 or 1)" />
         <FIELD NAME="is_finished" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false"
           COMMENT="specifies whether activity is finished &amp;amp; closed (0 or 1)" />
+        <FIELD NAME="is_graded" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false"
+          COMMENT="specifies whether activity is finished grading &amp;amp; closed (0 or 1)" />
         <FIELD NAME="extradata" TYPE="text" NOTNULL="false" SEQUENCE="false"
           COMMENT="JSON extraData regarding the quiz" />
       </FIELDS>
@@ -32,6 +34,22 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id" />
         <KEY NAME="fk_course" TYPE="foreign" FIELDS="course" REFTABLE="course" REFFIELDS="id" />
       </KEYS>
+    </TABLE>
+    <TABLE NAME="tomaetest_grades" COMMENT="Stores the overall grade for each user on the activity.">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="activity" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Foreign key references tomaetest.id."/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Foreign key references user.id."/>
+        <FIELD NAME="grade" TYPE="number" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" DECIMALS="5" COMMENT="The overall grade from the activity. Not affected by overrides in the gradebook."/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="The last time this grade changed."/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="activity" TYPE="foreign" FIELDS="activity" REFTABLE="tomaetest" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="userid" UNIQUE="false" FIELDS="userid"/>
+      </INDEXES>
     </TABLE>
     <TABLE NAME="tet_courses" COMMENT="Stores the tomaetest courses mapping.">
       <FIELDS>

@@ -89,16 +89,20 @@ if (has_capability("mod/tomaetest:preview", $modulecontext)) {
 if (has_capability("mod/tomaetest:attempt", $modulecontext)) {
     echo "<br><br><br>";
     echo "<p>can attempt</p>";
-    if ($moduleinstance->is_ready && !$moduleinstance->is_finished) {
-        $activityid = $moduleinstance->id;
-        $cmid = $cm->id;
-        $vixurl = new moodle_url('/mod/tomaetest/misc/openVIX.php', array('activityid' => $activityid, 'cmid' => $cmid));
-        echo "<br>
+    if ($moduleinstance->is_ready) {
+        if (!$moduleinstance->is_finished) {
+            $activityid = $moduleinstance->id;
+            $cmid = $cm->id;
+            $vixurl = new moodle_url('/mod/tomaetest/misc/openVIX.php', array('activityid' => $activityid, 'cmid' => $cmid));
+            echo "<br>
             <p> Make sure to install TomaETest first by <a target='_blank' href='https://setup.tomaetest.com/TomaETest/setup.html'>clicking here</a>.</p>
             After installation, please <a target='_blank' href='$vixurl'>Click here </a>to launch TomaETest client";
-        // $url = new moodle_url('/mod/tomaetest/misc/sso.php', array('examid' => $examid, 'location' => $location));
-        // // TODORON: change to get_string and add to lang file
-        // echo "<a target='_blank' href='$url'>Click here to open Monitor</a>";
+            // $url = new moodle_url('/mod/tomaetest/misc/sso.php', array('examid' => $examid, 'location' => $location));
+            // // TODORON: change to get_string and add to lang file
+            // echo "<a target='_blank' href='$url'>Click here to open Monitor</a>";
+        } else {
+            echo "<p>Activity is finished</p>";
+        }
     }
     else {
         // TODORON: change to get_string and add to lang file

@@ -20,26 +20,18 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace mod_tomaetest\task;
 
-defined('MOODLE_INTERNAL') || die();
-global $DB, $CFG;
-
-require_once(__DIR__.'/../classes/Utils.php');
-
-
-function update_relevant_participants() {
-    global $DB;
-    $relevantactivities = $DB->get_records_sql("SELECT * FROM {tomaetest} WHERE is_ready=0 OR is_finished=0");
-    $coursesids = array();
-    foreach ($relevantactivities as $id => $activity) {
-        if (!in_array($activity->course, $coursesids)) {
-            array_push($coursesids, $activity->course);
-        }
+class sync_tg_grades extends \core\task\scheduled_task
+{
+    public function get_name()
+    {
+        return 'syncTGGrades';
     }
-    foreach ($coursesids as $courseid) {
-        tet_utils::upsert_tet_course_participants($courseid);
+
+    public function execute()
+    {
+        global $CFG;
+        require_once($CFG->dirroot . "/mod/tomaetest/misc/grades_sync.php");
     }
 }
-
-
-update_relevant_participants();

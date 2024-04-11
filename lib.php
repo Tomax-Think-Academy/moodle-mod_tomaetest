@@ -67,9 +67,12 @@ function tomaetest_add_instance($moduleinstance, $mform = null) {
     $examlink = $res["data"]["examLink"];
     $moduleinstance->extradata = json_encode(["TETExamLink" => $examlink]);
 
-    $id = $DB->insert_record('tomaetest', $moduleinstance);
+    $moduleinstance->id = $DB->insert_record('tomaetest', $moduleinstance);
 
-    return $id;
+    // Do the processing required after an add or an update.
+    tomaetest_after_add_or_update($moduleinstance);
+
+    return $moduleinstance->id;
 }
 
 /**
@@ -95,6 +98,9 @@ function tomaetest_update_instance($moduleinstance, $mform = null) {
         }
     }
 
+    // Do the processing required after an add or an update.
+    tomaetest_after_add_or_update($moduleinstance);
+
     return $DB->update_record('tomaetest', $moduleinstance);
 }
 
@@ -116,7 +122,151 @@ function tomaetest_delete_instance($id) {
         throw new moodle_exception('tetgeneralerror', 'mod_tomaetest', '', '', json_encode($res));
     }
 
+    tomaetest_grade_item_delete($activity);
+
     $DB->delete_records('tomaetest', array('id' => $id));
 
     return true;
+}
+
+/**
+ * Return grade for given user or all users.
+ *
+ * @param int $activityid id of activity
+ * @param int $userid optional user id, 0 means all users
+ * @return array array of grades, false if none. These are raw grades. They should
+ * be processed with tomaetest_format_grade for display.
+ */
+function tomaetest_get_user_grades($activityid, $userid = 0) {
+    global $CFG, $DB;
+
+    $params = [$activityid];
+    $usertest = '';
+    if ($userid) {
+        $params[] = $userid;
+        $usertest = 'AND u.id = ?';
+    }
+    return $DB->get_records_sql("
+            SELECT
+                u.id,
+                u.id AS userid,
+                tg.grade AS rawgrade,
+                tg.timemodified AS dategraded
+
+            FROM {user} u
+            JOIN {tomaetest_grades} tg ON u.id = tg.userid
+
+            WHERE tg.activity = ?
+            $usertest
+            GROUP BY u.id, tg.grade, tg.timemodified", $params);
+}
+
+/**
+ * Round a grade to the correct number of decimal places, and format it for display.
+ *
+ * @param float $grade The grade to round.
+ * @return string
+ */
+function tomaetest_format_grade($grade) {
+    if (is_null($grade)) {
+        return get_string('notyetgraded', 'mod_tomaetest');
+    }
+    return format_float($grade, 2);
+}
+
+/**
+ * Update grades in central gradebook
+ *
+ * @category grade
+ * @param stdClass $activity the activity settings.
+ * @param int $userid specific user only, 0 means all users.
+ * @param bool $nullifnone If a single user is specified and $nullifnone is true a grade item with a null rawgrade will be inserted
+ */
+function tomaetest_update_grades($activity, $userid = 0, $nullifnone = true) {
+    global $CFG;
+    require_once($CFG->libdir . '/gradelib.php');
+
+    if (isset($activity->grade) && $activity->grade == 0) {
+        return tomaetest_grade_item_update($activity);
+
+    } else if ($grades = tomaetest_get_user_grades($activity->id, $userid)) {
+        return tomaetest_grade_item_update($activity, $grades);
+
+    } else if ($userid && $nullifnone) {
+        $grade = new stdClass();
+        $grade->userid = $userid;
+        $grade->rawgrade = null;
+        return tomaetest_grade_item_update($activity, $grade);
+
+    } else {
+        return tomaetest_grade_item_update($activity);
+    }
+}
+
+/**
+ * Create or update the grade item for given activity
+ *
+ * @category grade
+ * @param stdClass $activity object
+ * @param mixed $grades optional array/object of grade(s); 'reset' means reset grades in gradebook
+ * @return int 0 if ok, error code otherwise
+ */
+function tomaetest_grade_item_update($activity, $grades = null) {
+    global $CFG;
+    require_once($CFG->libdir . '/gradelib.php');
+
+    $params = ['itemname' => $activity->name];
+
+    $params['gradetype'] = GRADE_TYPE_VALUE;
+    $params['grademax']  = 100;
+    // $params['grademax']  = $activity->grade;
+    // TODORON: maybe add activity max grade value
+    $params['grademin']  = 0;
+
+    $params['hidden'] = 0;
+
+    if (!$params['hidden']) {
+        // we need to hide it if the activity is hidden from students.
+        if (property_exists($activity, 'visible')) {
+            // Saving the activity form, and cm not yet updated in the database.
+            $params['hidden'] = !$activity->visible;
+        } else {
+            $cm = get_coursemodule_from_instance('tomaetest', $activity->id);
+            $params['hidden'] = !$cm->visible;
+        }
+    }
+
+    if ($grades  === 'reset') {
+        $params['reset'] = true;
+        $grades = null;
+    }
+
+    return grade_update('mod/tomaetest', $activity->course, 'mod', 'tomaetest', $activity->id, 0, $grades, $params);
+}
+
+/**
+ * Delete grade item for given activity
+ *
+ * @category grade
+ * @param stdClass $activity object
+ * @return int
+ */
+function tomaetest_grade_item_delete($activity) {
+    global $CFG;
+    require_once($CFG->libdir . '/gradelib.php');
+
+    return grade_update('mod/tomaetest', $activity->course, 'mod', 'tomaetest', $activity->id, 0,
+            null, ['deleted' => 1]);
+}
+
+/**
+ * This function is called at the end of tomaetest_add_instance
+ * and tomaetest_update_instance, to do the common processing.
+ *
+ * @param stdClass $activity the activity object.
+ */
+function tomaetest_after_add_or_update($activity) {
+
+    // Update related grade item.
+    tomaetest_grade_item_update($activity);
 }
