@@ -62,15 +62,212 @@ $PAGE->set_context($modulecontext);
 echo $OUTPUT->header();
 
 if (has_capability("mod/tomaetest:manage", $modulecontext)) {
-    echo "<p>can manage</p>";
     $examid=$moduleinstance->tet_id;
     $courseid=tet_utils::get_course_tet_id($course->id);
     $location='activity-settings';
+    $examdatetime = '';
+    if (isset($moduleinstance->extradata)) {
+        $decodedextradata = json_decode($moduleinstance->extradata, true);
+        $examdatetime = isset($decodedextradata["TETExamPublishTime"]) ? $decodedextradata["TETExamPublishTime"] : '';
+    }
     $url = new moodle_url('/mod/tomaetest/misc/sso.php', array('examid' => $examid, 'courseid' => $courseid, 'location' => $location));
-    // TODORON: change to get_string and add to lang file
-    echo "<a target='_blank' href='$url'>Click here to open in AS</a>";
+    if (!$moduleinstance->is_ready) {
+        echo "<style>
+        @media (min-width: 768px) {
+            .toma-container {
+                max-width: 830px;
+            }
+        }
+        .toma-container {
+            align-self: stretch;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 32px;
+
+            font-family: Inter, sans-serif;
+        }
+
+        [dir='rtl'] .toma-warning-box {
+            border-right: 6px solid #FDB022;
+        }
+
+        .toma-warning-box {
+            border-left: 6px solid #FDB022;
+            align-self: stretch;
+            padding: 12px 20px;
+            background: #FEF0C7;
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            gap: 8px;
+        }
+
+        .toma-status-container {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+
+            color: black;
+            font-size: 16px;
+            line-height: 24px;
+        }
+
+        .toma-status-item {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .toma-status-label {
+            font-weight: 600;
+        }
+
+        .toma-status-text, .toma-status-message {
+            font-weight: 400;
+        }
+
+        .toma-management-box {
+            align-self: stretch;
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid #D5D7DA;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .toma-management-text {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            color: black;
+        }
+
+        .toma-management-title {
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 30px;
+        }
+
+        .toma-management-description {
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 24px;
+        }
+
+        .toma-button-container {
+            display: flex;
+            justify-content: start;
+        }
+
+        .toma-primary-button {
+            padding: 10px 16px;
+            background: #1570EF;
+            border: 2px solid var(--Colors-Border-border-tertiary, #F5F5F5);
+            border-radius: 8px;
+            box-shadow: 0px 0px 0px 1px rgba(10, 13, 18, 0.18) inset, 0px -2px 0px 0px  rgba(10, 13, 18, 0.05) inset, 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 24px;
+        }
+
+        .toma-notes-box {
+            align-self: stretch;
+            padding: 24px;
+            background: #F5F5F5;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            color: #181D27;
+        }
+
+        .toma-notes-title {
+            font-size: 18px;
+            font-weight: 500;
+            line-height: 28px;
+        }
+
+        .toma-notes-text {
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 24px;
+        }
+    </style>
+    
+    <div class='toma-container'>
+            <div class='toma-warning-box'>
+                <div class='toma-status-container'>
+                    <div class='toma-status-item'>
+                        <span class='toma-status-label'>".get_string('activitystatus', 'mod_tomaetest').": </span>
+                        <span class='toma-status-text'>".get_string('notreadyvalue', 'mod_tomaetest')."</span>
+                    </div>
+                    <div class='toma-status-item'>
+                        <span class='toma-status-label'>".get_string('due', 'mod_tomaetest').": </span>
+                        <span id='due-date' class='toma-status-text'>-</span>
+                    </div>
+                </div>
+                <div class='toma-status-message'>
+                    ".get_string('notreadydescription', 'mod_tomaetest')."
+                </div>
+            </div>
+            <div class='toma-management-box'>
+                <div class='toma-management-text'>
+                    <div class='toma-management-title'>".get_string('activitymanagementtitle', 'mod_tomaetest')."</div>
+                    <div class='toma-management-description'>
+                        ".get_string('activitymanagementdescription', 'mod_tomaetest')."
+                    </div>
+                </div>
+                <div class='toma-button-container'>
+                    <button class='toma-primary-button' onclick=\"window.open('$url', '_blank')\">".get_string('openinassessmentstudio', 'mod_tomaetest')."</button>
+                </div>
+            </div>
+            <div class='toma-notes-box'>
+                <div class='toma-notes-title'>".get_string('importantnotestitle', 'mod_tomaetest')."</div>
+                <div class='toma-notes-text'>
+                    <li>
+                        ".get_string('completebeforeaccess', 'mod_tomaetest')."
+                    </li>
+                    <li>
+                        ".get_string('availableafterready', 'mod_tomaetest')."
+                    </li>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function formatToLocalTime(utcDateString) {
+                const date = new Date(utcDateString);
+                return date.toLocaleString(undefined, {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false,
+                });
+            }
+            
+            document.addEventListener('DOMContentLoaded', function () {
+                const utcString = '$examdatetime';
+                console.log('hello');
+                console.log(utcString);
+                if (utcString) {
+                    document.getElementById('due-date').textContent = formatToLocalTime(utcString);
+                }
+            });
+        </script>";
+    }
 }
-if (has_capability("mod/tomaetest:preview", $modulecontext)) {
+else if (has_capability("mod/tomaetest:preview", $modulecontext)) {
     echo "<br><br><br>";
     echo "<p>can preview</p>";
     $examid=$moduleinstance->tet_id;
@@ -86,10 +283,10 @@ if (has_capability("mod/tomaetest:preview", $modulecontext)) {
     }
     // echo "<p>" . json_encode(tet_utils::get_course_teachers($course->id)) . "</p>";
 }
-if (has_capability("mod/tomaetest:attempt", $modulecontext)) {
+else if (has_capability("mod/tomaetest:attempt", $modulecontext)) {
     echo "<br><br><br>";
     echo "<p>can attempt</p>";
-    if ($moduleinstance->is_ready) {
+    if (tet_utils::is_activity_available($moduleinstance)) {
         if (!$moduleinstance->is_finished) {
             $activityid = $moduleinstance->id;
             $cmid = $cm->id;

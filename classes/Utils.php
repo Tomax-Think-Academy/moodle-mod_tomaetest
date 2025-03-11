@@ -223,7 +223,17 @@ class tet_utils
     }
 
     public static function is_activity_available($activity) {
-        return $activity["is_ready"] == 1 && $activity["is_finished"] == 0;
+        $activity->extradata = json_decode($activity->extradata, true);
+        $exampublishtime = isset($activity->extradata["TETExamPublishTime"]) ? $activity->extradata["TETExamPublishTime"] : null;
+        $examafterpublishtime = false;
+        if (isset($exampublishtime)) {
+            $dbdatetime = new DateTime($exampublishtime);
+            $now = new DateTime("now", new DateTimeZone("UTC"));
+            if ($now > $dbdatetime) {
+                $examafterpublishtime = true;
+            }
+        }
+        return $activity->is_ready == 1 && $examafterpublishtime;
     }
 
     public static function upsert_tet_course($course, $user) {

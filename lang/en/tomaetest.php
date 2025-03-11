@@ -36,3 +36,22 @@ $string['pluginadministration'] = 'Activity administration';
 
 $string['tetgeneralerror'] = 'Error from TET';
 $string['tggeneralerror'] = 'Error from TG';
+
+$string['activitystatus'] = 'Activity Status';
+$string['notreadyvalue'] = 'Not ready yet';
+$string['due'] = 'Due';
+$string['notreadydescription'] = 'The activity is still being prepared and is not yet available for students.';
+$string['activitymanagementtitle'] = 'Activity Management';
+$string['activitymanagementdescription'] = 'Use the Assessment Studio system to edit and define the activity, add questions, and set the activity format.';
+$string['openinassessmentstudio'] = 'Open in assessment studio';
+$string['importantnotestitle'] = 'Important Notes';
+$string['completebeforeaccess'] = 'Activity settings must be completed before students can access it.';
+$string['availableafterready'] = 'Once the activity is ready, it will become available for the students.';
+// $string[''] = '';
+// $string[''] = '';
+// $string[''] = '';
+// $string[''] = '';
+// $string[''] = '';
+// $string[''] = '';
+// $string[''] = '';
+// $string[''] = '';
