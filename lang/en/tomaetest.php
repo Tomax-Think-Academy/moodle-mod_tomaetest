@@ -39,16 +39,20 @@ $string['tggeneralerror'] = 'Error from TG';
 
 $string['activitystatus'] = 'Activity Status';
 $string['notreadyvalue'] = 'Not ready yet';
+$string['readyvalue'] = 'Ready';
 $string['due'] = 'Due';
 $string['notreadydescription'] = 'The activity is still being prepared and is not yet available for students.';
 $string['activitymanagementtitle'] = 'Activity Management';
-$string['activitymanagementdescription'] = 'Use the Assessment Studio system to edit and define the activity, add questions, and set the activity format.';
+$string['activitymanagementnotreadydescription'] = 'Use the Assessment Studio system to edit and define the activity, add questions, and set the activity format.';
+$string['activitymanagementreadydescription'] = 'The activity is ready and running. You can monitor the activity in real time.';
 $string['openinassessmentstudio'] = 'Open in assessment studio';
 $string['importantnotestitle'] = 'Important Notes';
 $string['completebeforeaccess'] = 'Activity settings must be completed before students can access it.';
 $string['availableafterready'] = 'Once the activity is ready, it will become available for the students.';
-// $string[''] = '';
-// $string[''] = '';
+
+$string['readydescription'] = 'The activity is ready and running. You can monitor the activity in real time.';
+$string['activitynowavailable'] = 'The activity is now available to all students.';
+$string['proctoringtoolsnote'] = 'If proctoring tools are available for this activity, you can monitor students’ activity by accessing the Tomax’s monitor through the Assessment Studio.';
 // $string[''] = '';
 // $string[''] = '';
 // $string[''] = '';

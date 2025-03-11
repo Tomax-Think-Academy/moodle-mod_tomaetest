@@ -73,206 +73,403 @@ if (has_capability("mod/tomaetest:manage", $modulecontext)) {
     $url = new moodle_url('/mod/tomaetest/misc/sso.php', array('examid' => $examid, 'courseid' => $courseid, 'location' => $location));
     if (!$moduleinstance->is_ready) {
         echo "<style>
-        @media (min-width: 768px) {
+            @media (min-width: 768px) {
+                .toma-container {
+                    max-width: 830px;
+                }
+            }
+
             .toma-container {
-                max-width: 830px;
+                align-self: stretch;
+                margin: 0 auto;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 32px;
+
+                font-family: Inter, sans-serif;
             }
-        }
 
-        .toma-container {
-            align-self: stretch;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 32px;
-
-            font-family: Inter, sans-serif;
-        }
-
-        [dir='rtl'] .toma-warning-box {
-            border-right: 6px solid #FDB022;
-        }
-
-        .toma-warning-box {
-            border-left: 6px solid #FDB022;
-            align-self: stretch;
-            padding: 12px 20px;
-            background: #FEF0C7;
-            border-radius: 6px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            gap: 8px;
-        }
-
-        .toma-status-container {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-
-            color: black;
-            font-size: 16px;
-            line-height: 24px;
-        }
-
-        .toma-status-item {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            gap: 6px;
-        }
-
-        .toma-status-label {
-            font-weight: 600;
-        }
-
-        .toma-status-text,
-        .toma-status-message {
-            font-weight: 400;
-        }
-
-        .toma-management-box {
-            align-self: stretch;
-            padding: 24px;
-            border-radius: 12px;
-            border: 1px solid #D5D7DA;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .toma-management-text {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            color: black;
-        }
-
-        .toma-management-title {
-            font-size: 20px;
-            font-weight: 600;
-            line-height: 30px;
-        }
-
-        .toma-management-description {
-            font-size: 16px;
-            font-weight: 400;
-            line-height: 24px;
-        }
-
-        .toma-button-container {
-            display: flex;
-            justify-content: start;
-        }
-
-        .toma-primary-button {
-            padding: 10px 16px;
-            background: #1570EF;
-            border: 2px solid var(--Colors-Border-border-tertiary, #F5F5F5);
-            border-radius: 8px;
-            box-shadow: 0px 0px 0px 1px rgba(10, 13, 18, 0.18) inset, 0px -2px 0px 0px rgba(10, 13, 18, 0.05) inset, 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
-            color: white;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            line-height: 24px;
-        }
-
-        .toma-notes-box {
-            align-self: stretch;
-            padding: 24px;
-            background: #F5F5F5;
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            color: #181D27;
-        }
-
-        .toma-notes-title {
-            font-size: 18px;
-            font-weight: 500;
-            line-height: 28px;
-        }
-
-        .toma-notes-text {
-            font-size: 16px;
-            font-weight: 400;
-            line-height: 24px;
-        }
-    </style>
-
-    <div class='toma-container'>
-        <div class='toma-warning-box'>
-            <div class='toma-status-container'>
-                <div class='toma-status-item'>
-                    <span class='toma-status-label'>".get_string('activitystatus', 'mod_tomaetest').": </span>
-                    <span class='toma-status-text'>".get_string('notreadyvalue', 'mod_tomaetest')."</span>
-                </div>
-                <div class='toma-status-item'>
-                    <span class='toma-status-label'>".get_string('due', 'mod_tomaetest').": </span>
-                    <span id='due-date' class='toma-status-text'>-</span>
-                </div>
-            </div>
-            <div class='toma-status-message'>
-                ".get_string('notreadydescription', 'mod_tomaetest')."
-            </div>
-        </div>
-        <div class='toma-management-box'>
-            <div class='toma-management-text'>
-                <div class='toma-management-title'>".get_string('activitymanagementtitle', 'mod_tomaetest')."</div>
-                <div class='toma-management-description'>
-                    ".get_string('activitymanagementdescription', 'mod_tomaetest')."
-                </div>
-            </div>
-            <div class='toma-button-container'>
-                <button class='toma-primary-button' onclick=\"window.open('$url', '_blank'
-                    )\">".get_string('openinassessmentstudio', 'mod_tomaetest')."</button>
-            </div>
-        </div>
-        <div class='toma-notes-box'>
-            <div class='toma-notes-title'>".get_string('importantnotestitle', 'mod_tomaetest')."</div>
-            <div class='toma-notes-text'>
-                <li>
-                    ".get_string('completebeforeaccess', 'mod_tomaetest')."
-                </li>
-                <li>
-                    ".get_string('availableafterready', 'mod_tomaetest')."
-                </li>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        function formatToLocalTime(utcDateString) {
-            const date = new Date(utcDateString);
-            // Get individual parts of the date
-            const weekday = date.toLocaleString(undefined, { weekday: 'long' });  // Sunday
-            const day = date.getDate().toString().padStart(2, '0');  // 11
-            const month = date.toLocaleString(undefined, { month: 'long' });  // February
-            const year = date.getFullYear();  // 2024
-            const time = date.toLocaleString(undefined, {
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: true
-            }).replace(/^0/, '');  // Remove leading zero from hours
-
-            // Construct the final formatted string
-            return `\${weekday}, \${day} \${month} \${year}, \${time}`;
-        }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            const utcString = '$examdatetime';
-            console.log('hello');
-            console.log(utcString);
-            if (utcString) {
-                document.getElementById('due-date').textContent = formatToLocalTime(utcString);
+            [dir='rtl'] .toma-warning-box {
+                border-right: 6px solid #FDB022;
             }
-        });
-    </script>";
+
+            .toma-warning-box {
+                border-left: 6px solid #FDB022;
+                align-self: stretch;
+                padding: 12px 20px;
+                background: #FEF0C7;
+                border-radius: 6px;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                gap: 8px;
+            }
+
+            .toma-status-container {
+                display: flex;
+                gap: 20px;
+                align-items: center;
+
+                color: black;
+                font-size: 16px;
+                line-height: 24px;
+            }
+
+            .toma-status-item {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                gap: 6px;
+            }
+
+            .toma-status-label {
+                font-weight: 600;
+            }
+
+            .toma-status-text,
+            .toma-status-message {
+                font-weight: 400;
+            }
+
+            .toma-management-box {
+                align-self: stretch;
+                padding: 24px;
+                border-radius: 12px;
+                border: 1px solid #D5D7DA;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                gap: 20px;
+            }
+
+            .toma-management-text {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                color: black;
+            }
+
+            .toma-management-title {
+                font-size: 20px;
+                font-weight: 600;
+                line-height: 30px;
+            }
+
+            .toma-management-description {
+                font-size: 16px;
+                font-weight: 400;
+                line-height: 24px;
+            }
+
+            .toma-button-container {
+                display: flex;
+                justify-content: start;
+            }
+
+            .toma-primary-button {
+                padding: 10px 16px;
+                background: #1570EF;
+                border: 2px solid var(--Colors-Border-border-tertiary, #F5F5F5);
+                border-radius: 8px;
+                box-shadow: 0px 0px 0px 1px rgba(10, 13, 18, 0.18) inset, 0px -2px 0px 0px rgba(10, 13, 18, 0.05) inset, 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
+                color: white;
+                cursor: pointer;
+                font-size: 16px;
+                font-weight: 600;
+                line-height: 24px;
+            }
+
+            .toma-notes-box {
+                align-self: stretch;
+                padding: 24px;
+                background: #F5F5F5;
+                border-radius: 12px;
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                color: #181D27;
+            }
+
+            .toma-notes-title {
+                font-size: 18px;
+                font-weight: 500;
+                line-height: 28px;
+            }
+
+            .toma-notes-text {
+                font-size: 16px;
+                font-weight: 400;
+                line-height: 24px;
+            }
+        </style>
+
+        <div class='toma-container'>
+            <div class='toma-warning-box'>
+                <div class='toma-status-container'>
+                    <div class='toma-status-item'>
+                        <span class='toma-status-label'>".get_string('activitystatus', 'mod_tomaetest').": </span>
+                        <span class='toma-status-text'>".get_string('notreadyvalue', 'mod_tomaetest')."</span>
+                    </div>
+                    <div class='toma-status-item'>
+                        <span class='toma-status-label'>".get_string('due', 'mod_tomaetest').": </span>
+                        <span id='due-date' class='toma-status-text'>-</span>
+                    </div>
+                </div>
+                <div class='toma-status-message'>
+                    ".get_string('notreadydescription', 'mod_tomaetest')."
+                </div>
+            </div>
+            <div class='toma-management-box'>
+                <div class='toma-management-text'>
+                    <div class='toma-management-title'>".get_string('activitymanagementtitle', 'mod_tomaetest')."</div>
+                    <div class='toma-management-description'>
+                        ".get_string('activitymanagementnotreadydescription', 'mod_tomaetest')."
+                    </div>
+                </div>
+                <div class='toma-button-container'>
+                    <button class='toma-primary-button' onclick=\"window.open('$url', '_blank'
+                        )\">".get_string('openinassessmentstudio', 'mod_tomaetest')."</button>
+                </div>
+            </div>
+            <div class='toma-notes-box'>
+                <div class='toma-notes-title'>".get_string('importantnotestitle', 'mod_tomaetest')."</div>
+                <div class='toma-notes-text'>
+                    <li>
+                        ".get_string('completebeforeaccess', 'mod_tomaetest')."
+                    </li>
+                    <li>
+                        ".get_string('availableafterready', 'mod_tomaetest')."
+                    </li>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function formatToLocalTime(utcDateString) {
+                const date = new Date(utcDateString);
+                // Get individual parts of the date
+                const weekday = date.toLocaleString(undefined, { weekday: 'long' });  // Sunday
+                const day = date.getDate().toString().padStart(2, '0');  // 11
+                const month = date.toLocaleString(undefined, { month: 'long' });  // February
+                const year = date.getFullYear();  // 2024
+                const time = date.toLocaleString(undefined, {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                }).replace(/^0/, '');  // Remove leading zero from hours
+
+                // Construct the final formatted string
+                return `\${weekday}, \${day} \${month} \${year}, \${time}`;
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                const utcString = '$examdatetime';
+                console.log('hello');
+                console.log(utcString);
+                if (utcString) {
+                    document.getElementById('due-date').textContent = formatToLocalTime(utcString);
+                }
+            });
+        </script>";
+    }
+    else if (!$moduleinstance->is_finished) {
+        echo "<style>
+            @media (min-width: 768px) {
+                .toma-container {
+                    max-width: 830px;
+                }
+            }
+            .toma-container {
+                align-self: stretch;
+                margin: 0 auto;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 32px;
+
+                font-family: Inter, sans-serif;
+            }
+
+            [dir='rtl'] .toma-success-box {
+                border-right: 6px solid #47CD89;
+            }
+
+            .toma-success-box {
+                border-left: 6px solid #47CD89;
+                align-self: stretch;
+                padding: 12px 20px;
+                background: #ECFDF3;
+                border-radius: 6px;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                gap: 8px;
+            }
+
+            .toma-status-container {
+                display: flex;
+                gap: 20px;
+                align-items: center;
+
+                color: black;
+                font-size: 16px;
+                line-height: 24px;
+            }
+
+            .toma-status-item {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                gap: 6px;
+            }
+
+            .toma-status-label {
+                font-weight: 600;
+            }
+
+            .toma-status-text, .toma-status-message {
+                font-weight: 400;
+            }
+
+            .toma-management-box {
+                align-self: stretch;
+                padding: 24px;
+                border-radius: 12px;
+                border: 1px solid #D5D7DA;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                gap: 20px;
+            }
+
+            .toma-management-text {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                color: black;
+            }
+
+            .toma-management-title {
+                font-size: 20px;
+                font-weight: 600;
+                line-height: 30px;
+            }
+
+            .toma-management-description {
+                font-size: 16px;
+                font-weight: 400;
+                line-height: 24px;
+            }
+
+            .toma-button-container {
+                display: flex;
+                justify-content: start;
+            }
+
+            .toma-primary-button {
+                padding: 10px 16px;
+                background: #1570EF;
+                border: 2px solid var(--Colors-Border-border-tertiary, #F5F5F5);
+                border-radius: 8px;
+                box-shadow: 0px 0px 0px 1px rgba(10, 13, 18, 0.18) inset, 0px -2px 0px 0px  rgba(10, 13, 18, 0.05) inset, 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
+                color: white;
+                cursor: pointer;
+                font-size: 16px;
+                font-weight: 600;
+                line-height: 24px;
+            }
+
+            .toma-notes-box {
+                align-self: stretch;
+                padding: 24px;
+                background: #F5F5F5;
+                border-radius: 12px;
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                color: #181D27;
+            }
+
+            .toma-notes-title {
+                font-size: 18px;
+                font-weight: 500;
+                line-height: 28px;
+            }
+
+            .toma-notes-text {
+                font-size: 16px;
+                font-weight: 400;
+                line-height: 24px;
+            }
+        </style>
+        
+        <div class='toma-container'>
+            <div class='toma-success-box'>
+                <div class='toma-status-container'>
+                    <div class='toma-status-item'>
+                        <span class='toma-status-label'>".get_string('activitystatus', 'mod_tomaetest').": </span>
+                        <span class='toma-status-text'>".get_string('readyvalue', 'mod_tomaetest')."</span>
+                    </div>
+                </div>
+                <div class='toma-status-message'>
+                    ".get_string('readydescription', 'mod_tomaetest')."
+                </div>
+            </div>
+            <div class='toma-management-box'>
+                <div class='toma-management-text'>
+                    <div class='toma-management-title'>".get_string('activitymanagementtitle', 'mod_tomaetest')."</div>
+                    <div class='toma-management-description'>
+                        ".get_string('activitymanagementreadydescription', 'mod_tomaetest')."
+                    </div>
+                </div>
+                <div>
+                    <!-- TODORON: add design here -->
+                </div>
+                <div class='toma-button-container'>
+                    <button class='toma-primary-button' onclick=\"window.open('$url', '_blank')\">".get_string('openinassessmentstudio', 'mod_tomaetest')."</button>
+                </div>
+            </div>
+            <div class='toma-notes-box'>
+                <div class='toma-notes-title'>".get_string('importantnotestitle', 'mod_tomaetest')."</div>
+                <div class='toma-notes-text'>
+                    <li>
+                        ".get_string('activitynowavailable', 'mod_tomaetest')."
+                    </li>
+                    <li>
+                        ".get_string('proctoringtoolsnote', 'mod_tomaetest')."
+                    </li>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function formatToLocalTime(utcDateString) {
+                const date = new Date(utcDateString);
+                // Get individual parts of the date
+                const weekday = date.toLocaleString(undefined, { weekday: 'long' });  // Sunday
+                const day = date.getDate().toString().padStart(2, '0');  // 11
+                const month = date.toLocaleString(undefined, { month: 'long' });  // February
+                const year = date.getFullYear();  // 2024
+                const time = date.toLocaleString(undefined, {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                }).replace(/^0/, '');  // Remove leading zero from hours
+
+                // Construct the final formatted string
+                return `\${weekday}, \${day} \${month} \${year}, \${time}`;
+            }
+            
+            document.addEventListener('DOMContentLoaded', function () {
+                // const utcString = '$examdatetime';
+                // if (utcString) {
+                //     document.getElementById('due-date').textContent = formatToLocalTime(utcString);
+                // }
+            });
+        </script>";
     }
 }
 else if (has_capability("mod/tomaetest:preview", $modulecontext)) {
