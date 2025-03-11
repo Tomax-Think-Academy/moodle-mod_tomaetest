@@ -78,6 +78,7 @@ if (has_capability("mod/tomaetest:manage", $modulecontext)) {
                 max-width: 830px;
             }
         }
+
         .toma-container {
             align-self: stretch;
             margin: 0 auto;
@@ -127,7 +128,8 @@ if (has_capability("mod/tomaetest:manage", $modulecontext)) {
             font-weight: 600;
         }
 
-        .toma-status-text, .toma-status-message {
+        .toma-status-text,
+        .toma-status-message {
             font-weight: 400;
         }
 
@@ -171,7 +173,7 @@ if (has_capability("mod/tomaetest:manage", $modulecontext)) {
             background: #1570EF;
             border: 2px solid var(--Colors-Border-border-tertiary, #F5F5F5);
             border-radius: 8px;
-            box-shadow: 0px 0px 0px 1px rgba(10, 13, 18, 0.18) inset, 0px -2px 0px 0px  rgba(10, 13, 18, 0.05) inset, 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
+            box-shadow: 0px 0px 0px 1px rgba(10, 13, 18, 0.18) inset, 0px -2px 0px 0px rgba(10, 13, 18, 0.05) inset, 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
             color: white;
             cursor: pointer;
             font-size: 16px;
@@ -202,69 +204,75 @@ if (has_capability("mod/tomaetest:manage", $modulecontext)) {
             line-height: 24px;
         }
     </style>
-    
+
     <div class='toma-container'>
-            <div class='toma-warning-box'>
-                <div class='toma-status-container'>
-                    <div class='toma-status-item'>
-                        <span class='toma-status-label'>".get_string('activitystatus', 'mod_tomaetest').": </span>
-                        <span class='toma-status-text'>".get_string('notreadyvalue', 'mod_tomaetest')."</span>
-                    </div>
-                    <div class='toma-status-item'>
-                        <span class='toma-status-label'>".get_string('due', 'mod_tomaetest').": </span>
-                        <span id='due-date' class='toma-status-text'>-</span>
-                    </div>
+        <div class='toma-warning-box'>
+            <div class='toma-status-container'>
+                <div class='toma-status-item'>
+                    <span class='toma-status-label'>".get_string('activitystatus', 'mod_tomaetest').": </span>
+                    <span class='toma-status-text'>".get_string('notreadyvalue', 'mod_tomaetest')."</span>
                 </div>
-                <div class='toma-status-message'>
-                    ".get_string('notreadydescription', 'mod_tomaetest')."
+                <div class='toma-status-item'>
+                    <span class='toma-status-label'>".get_string('due', 'mod_tomaetest').": </span>
+                    <span id='due-date' class='toma-status-text'>-</span>
                 </div>
             </div>
-            <div class='toma-management-box'>
-                <div class='toma-management-text'>
-                    <div class='toma-management-title'>".get_string('activitymanagementtitle', 'mod_tomaetest')."</div>
-                    <div class='toma-management-description'>
-                        ".get_string('activitymanagementdescription', 'mod_tomaetest')."
-                    </div>
-                </div>
-                <div class='toma-button-container'>
-                    <button class='toma-primary-button' onclick=\"window.open('$url', '_blank')\">".get_string('openinassessmentstudio', 'mod_tomaetest')."</button>
-                </div>
-            </div>
-            <div class='toma-notes-box'>
-                <div class='toma-notes-title'>".get_string('importantnotestitle', 'mod_tomaetest')."</div>
-                <div class='toma-notes-text'>
-                    <li>
-                        ".get_string('completebeforeaccess', 'mod_tomaetest')."
-                    </li>
-                    <li>
-                        ".get_string('availableafterready', 'mod_tomaetest')."
-                    </li>
-                </div>
+            <div class='toma-status-message'>
+                ".get_string('notreadydescription', 'mod_tomaetest')."
             </div>
         </div>
+        <div class='toma-management-box'>
+            <div class='toma-management-text'>
+                <div class='toma-management-title'>".get_string('activitymanagementtitle', 'mod_tomaetest')."</div>
+                <div class='toma-management-description'>
+                    ".get_string('activitymanagementdescription', 'mod_tomaetest')."
+                </div>
+            </div>
+            <div class='toma-button-container'>
+                <button class='toma-primary-button' onclick=\"window.open('$url', '_blank'
+                    )\">".get_string('openinassessmentstudio', 'mod_tomaetest')."</button>
+            </div>
+        </div>
+        <div class='toma-notes-box'>
+            <div class='toma-notes-title'>".get_string('importantnotestitle', 'mod_tomaetest')."</div>
+            <div class='toma-notes-text'>
+                <li>
+                    ".get_string('completebeforeaccess', 'mod_tomaetest')."
+                </li>
+                <li>
+                    ".get_string('availableafterready', 'mod_tomaetest')."
+                </li>
+            </div>
+        </div>
+    </div>
 
-        <script>
-            function formatToLocalTime(utcDateString) {
-                const date = new Date(utcDateString);
-                return date.toLocaleString(undefined, {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: false,
-                });
+    <script>
+        function formatToLocalTime(utcDateString) {
+            const date = new Date(utcDateString);
+            // Get individual parts of the date
+            const weekday = date.toLocaleString(undefined, { weekday: 'long' });  // Sunday
+            const day = date.getDate().toString().padStart(2, '0');  // 11
+            const month = date.toLocaleString(undefined, { month: 'long' });  // February
+            const year = date.getFullYear();  // 2024
+            const time = date.toLocaleString(undefined, {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
+            }).replace(/^0/, '');  // Remove leading zero from hours
+
+            // Construct the final formatted string
+            return `\${weekday}, \${day} \${month} \${year}, \${time}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const utcString = '$examdatetime';
+            console.log('hello');
+            console.log(utcString);
+            if (utcString) {
+                document.getElementById('due-date').textContent = formatToLocalTime(utcString);
             }
-            
-            document.addEventListener('DOMContentLoaded', function () {
-                const utcString = '$examdatetime';
-                console.log('hello');
-                console.log(utcString);
-                if (utcString) {
-                    document.getElementById('due-date').textContent = formatToLocalTime(utcString);
-                }
-            });
-        </script>";
+        });
+    </script>";
     }
 }
 else if (has_capability("mod/tomaetest:preview", $modulecontext)) {
