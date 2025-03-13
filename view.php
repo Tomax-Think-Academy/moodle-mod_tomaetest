@@ -581,6 +581,7 @@ if (has_capability("mod/tomaetest:manage", $modulecontext)) {
             }
 
             .toma-finished-title {
+                text-align: center;
                 color: #181D27;
                 font-size: 20px;
                 font-weight: 600;
@@ -588,6 +589,7 @@ if (has_capability("mod/tomaetest:manage", $modulecontext)) {
             }
 
             .toma-finished-subtitle {
+                text-align: center;
                 color: #535862;
                 font-size: 16px;
                 font-weight: 400;
@@ -631,20 +633,89 @@ if (has_capability("mod/tomaetest:manage", $modulecontext)) {
     }
 }
 else if (has_capability("mod/tomaetest:preview", $modulecontext)) {
-    echo "<br><br><br>";
-    echo "<p>can preview</p>";
     $examid=$moduleinstance->tet_id;
     $location='monitor';
-    if ($moduleinstance->is_ready) {
+    if (!$moduleinstance->is_ready) {
+        echo "<style>
+            @media (min-width: 768px) {
+                .toma-container {
+                    max-width: 830px;
+                }
+            }
+            
+            .toma-container {
+                align-self: stretch;
+                margin: 0 auto;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 20px;
+
+                font-family: Inter, sans-serif;
+            }
+
+            .toma-icon-wrapper {
+                margin: 0 auto;   
+            }
+
+            .toma-not-ready-box {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .toma-not-ready-title {
+                text-align: center;
+                color: #181D27;
+                font-size: 20px;
+                font-weight: 600;
+                line-height: 30px;
+            }
+
+            .toma-not-ready-subtitle {
+                text-align: center;
+                color: #535862;
+                font-size: 16px;
+                font-weight: 400;
+                line-height: 24px;
+            }
+
+            .toma-note-wrapper {
+                margin-top: 12px;
+            }
+
+            .toma-note-text {
+                text-align: center;
+                color: #535862;
+                font-size: 12px;
+                font-weight: 400;
+                line-height: 18px;
+            }
+        </style>
+        
+        <div class='toma-container'>
+            <div class='toma-icon-wrapper'>
+                <svg width='56' height='56' viewBox='0 0 56 56' fill='none' xmlns='http://www.w3.org/2000/svg'>
+                    <path d='M0 28C0 12.536 12.536 0 28 0C43.464 0 56 12.536 56 28C56 43.464 43.464 56 28 56C12.536 56 0 43.464 0 28Z' fill='#F5F5F5'/>
+                    <path d='M28.0002 21V28L32.6668 30.3333M39.6668 28C39.6668 34.4433 34.4435 39.6666 28.0002 39.6666C21.5568 39.6666 16.3335 34.4433 16.3335 28C16.3335 21.5567 21.5568 16.3333 28.0002 16.3333C34.4435 16.3333 39.6668 21.5567 39.6668 28Z' stroke='#717680' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/>
+                </svg>                
+            </div>
+            <div class='toma-not-ready-box'>
+                <span class='toma-not-ready-title'>".get_string('activitynotready', 'mod_tomaetest')."</span>
+                <span class='toma-not-ready-subtitle'>".get_string('activitynotreadydescription', 'mod_tomaetest')."</span>
+            </div>
+            <div class='toma-note-wrapper'>
+                <span class='toma-note-text'>".get_string('activitynotreadynote', 'mod_tomaetest')."</span>
+            </div>
+        </div>";
+    }
+    else if (!$moduleinstance->is_finished) {
         $url = new moodle_url('/mod/tomaetest/misc/sso.php', array('examid' => $examid, 'location' => $location));
-        // TODORON: change to get_string and add to lang file
-        echo "<a target='_blank' href='$url'>Click here to open Monitor</a>";
     }
-    else {
-        // TODORON: change to get_string and add to lang file
-        echo "<p>Activity is not yet ready</p>";
+    else { // activity is finished
     }
-    // echo "<p>" . json_encode(tet_utils::get_course_teachers($course->id)) . "</p>";
 }
 else if (has_capability("mod/tomaetest:attempt", $modulecontext)) {
     echo "<br><br><br>";

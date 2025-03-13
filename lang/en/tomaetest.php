@@ -59,3 +59,6 @@ $string['dateclosed'] = 'Date closed';
 $string['dateclosednote'] = 'Note: Closing time does not include extended time arrangements.';
 $string['activityfinished'] = 'Activity is finished';
 $string['activityfinisheddescription'] = 'The activity has ended and is no longer available for submission.';
+$string['activitynotready'] = 'Activity not found';
+$string['activitynotreadydescription'] = 'The lecturer is still preparing this activity. Once the activity is ready, you will be able to view it and monitor students during the activity';
+$string['activitynotreadynote'] = '*You can check back later to see if the activity is ready.';
