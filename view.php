@@ -279,6 +279,9 @@ if (has_capability("mod/tomaetest:manage", $modulecontext)) {
         </script>";
     }
     else if (!$moduleinstance->is_finished) {
+        if (tet_utils::is_activity_available($moduleinstance)) {
+            $url = new moodle_url('/mod/tomaetest/misc/sso.php', array('courseid' => $courseid, 'location' => $location));
+        }
         echo "<style>
             @media (min-width: 768px) {
                 .toma-container {
