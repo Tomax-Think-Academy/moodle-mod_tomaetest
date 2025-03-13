@@ -65,10 +65,14 @@ if (has_capability("mod/tomaetest:manage", $modulecontext)) {
     $examid=$moduleinstance->tet_id;
     $courseid=tet_utils::get_course_tet_id($course->id);
     $location='activity-settings';
-    $examdatetime = '';
+    $checkintime = '';
+    $starttime = '';
+    $closetime = '';
     if (isset($moduleinstance->extradata)) {
         $decodedextradata = json_decode($moduleinstance->extradata, true);
-        $examdatetime = isset($decodedextradata["TETExamPublishTime"]) ? $decodedextradata["TETExamPublishTime"] : '';
+        $checkintime = isset($decodedextradata["TETExamPublishTime"]) ? $decodedextradata["TETExamPublishTime"] : '';
+        $starttime = isset($decodedextradata["TETExamStartTime"]) ? $decodedextradata["TETExamStartTime"] : '';
+        $closetime = isset($decodedextradata["TETExamEnd"]) ? $decodedextradata["TETExamEnd"] : '';
     }
     $url = new moodle_url('/mod/tomaetest/misc/sso.php', array('examid' => $examid, 'courseid' => $courseid, 'location' => $location));
     if (!$moduleinstance->is_ready) {
@@ -265,7 +269,7 @@ if (has_capability("mod/tomaetest:manage", $modulecontext)) {
             }
 
             document.addEventListener('DOMContentLoaded', function () {
-                const utcString = '$examdatetime';
+                const utcString = '$checkintime';
                 console.log('hello');
                 console.log(utcString);
                 if (utcString) {
@@ -281,6 +285,7 @@ if (has_capability("mod/tomaetest:manage", $modulecontext)) {
                     max-width: 830px;
                 }
             }
+            
             .toma-container {
                 align-self: stretch;
                 margin: 0 auto;
@@ -364,6 +369,50 @@ if (has_capability("mod/tomaetest:manage", $modulecontext)) {
                 line-height: 24px;
             }
 
+            .toma-management-cards {
+                display: flex;
+                align-items: flex-start;
+                gap: 20px;
+                align-self: stretch;
+            }
+
+            .toma-card {
+                align-self: stretch;
+                display: flex;
+                padding: 12px;
+                align-items: flex-start;
+                gap: 20px;
+                flex: 1 0 0;
+                border-radius: 8px;
+                border: 1px solid #D5D7DA;
+                background:#FAFAFA;
+            }
+
+            .toma-info-group {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+            .toma-info-label {
+                font-size: 14px;
+                font-weight: 400;
+                line-height: 20px;
+            }
+
+            .toma-info-value {
+                font-size: 16px;
+                font-weight: 600;
+                line-height: 24px;
+            }
+
+            .toma-info-note {
+                color: #717680;
+                font-size: 14px;
+                font-weight: 400;
+                line-height: 20px;
+            }
+            
             .toma-button-container {
                 display: flex;
                 justify-content: start;
@@ -425,8 +474,24 @@ if (has_capability("mod/tomaetest:manage", $modulecontext)) {
                         ".get_string('activitymanagementreadydescription', 'mod_tomaetest')."
                     </div>
                 </div>
-                <div>
-                    <!-- TODORON: add design here -->
+                <div class='toma-management-cards'>
+                    <div class='toma-card'>
+                        <div class='toma-info-group'>
+                            <div class='toma-info-label'>".get_string('checkinstarttime', 'mod_tomaetest').":</div>
+                            <div id='toma-check-in-time' class='toma-info-value'>-</div>
+                        </div>
+                        <div class='toma-info-group'>
+                            <div class='toma-info-label'>".get_string('actualstarttime', 'mod_tomaetest').":</div>
+                            <div id='toma-start-time' class='toma-info-value'>-</div>
+                        </div>
+                    </div>
+                    <div class='toma-card'>
+                        <div class='toma-info-group'>
+                            <div class='toma-info-label'>".get_string('dateclosed', 'mod_tomaetest').":</div>
+                            <div id='toma-close-time' class='toma-info-value'>-</div>
+                            <div class='toma-info-note'>".get_string('dateclosednote', 'mod_tomaetest')."</div>
+                        </div>
+                    </div>
                 </div>
                 <div class='toma-button-container'>
                     <button class='toma-primary-button' onclick=\"window.open('$url', '_blank')\">".get_string('openinassessmentstudio', 'mod_tomaetest')."</button>
@@ -464,10 +529,18 @@ if (has_capability("mod/tomaetest:manage", $modulecontext)) {
             }
             
             document.addEventListener('DOMContentLoaded', function () {
-                // const utcString = '$examdatetime';
-                // if (utcString) {
-                //     document.getElementById('due-date').textContent = formatToLocalTime(utcString);
-                // }
+                const checkinTime = '$checkintime';
+                if (checkinTime) {
+                    document.getElementById('toma-check-in-time').textContent = formatToLocalTime(checkinTime);
+                }
+                const startTime = '$starttime';
+                if (startTime) {
+                    document.getElementById('toma-start-time').textContent = formatToLocalTime(startTime);
+                }
+                const closeTime = '$closetime';
+                if (closeTime) {
+                    document.getElementById('toma-close-time').textContent = formatToLocalTime(closeTime);
+                }
             });
         </script>";
     }
