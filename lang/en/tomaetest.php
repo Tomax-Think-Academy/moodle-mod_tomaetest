@@ -76,3 +76,12 @@ $string['activitynotavailabledescription'] = 'You will be able to access this ac
 $string['availablefrom'] = 'Activity will be Available on';
 $string['downloadvixprompt'] = 'We recommend downloading VIX software before your activity, if you still don’t own it. Install it early to ensure a smooth activity experience and avoid last-minute technical issues.';
 $string['downloadvix'] = 'Download VIX';
+
+$string['activityreadystudentdescription'] = 'This activity is now available for you. You can download the required files and start the activity.';
+$string['activityreadystep1title'] = 'Download VIX Software';
+$string['activityreadystep1subtitle'] = 'If you haven\'t installed VIX yet, download it by clicking the button bellow. Follow the installation instructions to set it up on your computer.';
+$string['activityreadystep2title'] = 'Open Activity in VIX';
+$string['activityreadystep2subtitle'] = 'Once VIX is installed, click the "Open Activity in VIX" button. This will launch VIX and load your activity.';
+$string['activityreadystep3title'] = 'Complete and Submit Your Activity';
+$string['activityreadystep3subtitle'] = 'Follow the instructions in VIX to complete your activity. Make sure to submit your activity before the deadline.';
+$string['openinvix'] = 'Open Activity in VIX';

@@ -1084,6 +1084,197 @@ else if (has_capability("mod/tomaetest:attempt", $modulecontext)) {
         $activityid = $moduleinstance->id;
         $cmid = $cm->id;
         $vixurl = new moodle_url('/mod/tomaetest/misc/openVIX.php', array('activityid' => $activityid, 'cmid' => $cmid));
+        echo "<style>
+            @media (min-width: 768px) {
+                .toma-container {
+                    max-width: 830px;
+                }
+            }
+            
+            .toma-container {
+                align-self: stretch;
+                margin: 0 auto;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 32px;
+
+                font-family: Inter, sans-serif;
+            }
+
+            .toma-sub-container {
+                align-self: stretch;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .toma-icon-wrapper {
+                margin: 0 auto;   
+            }
+
+            .toma-ready-box {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .toma-ready-title {
+                text-align: center;
+                color: #181D27;
+                font-size: 20px;
+                font-weight: 600;
+                line-height: 30px;
+            }
+
+            .toma-ready-subtitle {
+                text-align: center;
+                color: #000000;
+                font-size: 16px;
+                font-weight: 400;
+                line-height: 24px;
+            }
+
+            [dir='rtl'] .toma-steps-box {
+                border-right: 6px solid #1570EF;
+            }
+
+            .toma-steps-box {
+                border-left: 6px solid #1570EF;
+                align-self: stretch;
+                padding: 20px 24px;
+                background: #EFF8FF;
+                border-radius: 6px;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                gap: 24px;
+            }
+
+            .toma-step-wrapper {
+                display: flex;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .toma-step-number {
+                display: flex;
+                flex-shrink: 0;
+                width: 24px;
+                height: 24px;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                border-radius: 20px;
+                background: #1570EF;
+                color: #FFF;
+                text-align: center;
+                font-size: 16px;
+                font-weight: 600;
+                line-height: 24px;
+            }
+            
+            .toma-step-content {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 2px;
+                font-size: 16px;
+                line-height: 24px;
+            }
+
+            .toma-step-title {
+                color: #181D27;
+                font-weight: 600;
+            }
+
+            .toma-step-subtitle {
+                color: #000;
+                font-weight: 400;
+            }
+
+            .toma-buttons-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .toma-primary-button {
+                padding: 10px 16px;
+                background: #1570EF;
+                border: 2px solid #F5F5F5;
+                border-radius: 8px;
+                box-shadow: 0px 0px 0px 1px rgba(10, 13, 18, 0.18) inset, 0px -2px 0px 0px  rgba(10, 13, 18, 0.05) inset, 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
+                color: white;
+                cursor: pointer;
+                font-size: 16px;
+                font-weight: 600;
+                line-height: 24px;
+            }
+
+            .toma-plain-button {
+                color: #175CD3;
+                font-size: 16px;
+                font-weight: 600;
+                line-height: 24px;
+                background: transparent;
+                border: none;
+                cursor: pointer;
+            }
+        </style>
+        
+        <div class='toma-container'>
+            <div class='toma-sub-container'>
+                <div class='toma-icon-wrapper'>
+                    <svg width='56' height='56' viewBox='0 0 56 56' fill='none' xmlns='http://www.w3.org/2000/svg'>
+                        <path d='M0 28C0 12.536 12.536 0 28 0C43.464 0 56 12.536 56 28C56 43.464 43.464 56 28 56C12.536 56 0 43.464 0 28Z' fill='#D1E9FF'/>
+                        <path d='M30.3332 16.6478V21.4667C30.3332 22.1201 30.3332 22.4468 30.4603 22.6964C30.5722 22.9159 30.7507 23.0944 30.9702 23.2063C31.2197 23.3334 31.5464 23.3334 32.1998 23.3334H37.0188M30.3332 33.8333H23.3332M32.6665 29.1667H23.3332M37.3332 25.6529V34.0667C37.3332 36.0268 37.3332 37.0069 36.9517 37.7556C36.6161 38.4142 36.0807 38.9496 35.4221 39.2852C34.6734 39.6667 33.6934 39.6667 31.7332 39.6667H24.2665C22.3063 39.6667 21.3262 39.6667 20.5775 39.2852C19.919 38.9496 19.3835 38.4142 19.048 37.7556C18.6665 37.0069 18.6665 36.0268 18.6665 34.0667V21.9333C18.6665 19.9731 18.6665 18.9931 19.048 18.2444C19.3835 17.5858 19.919 17.0504 20.5775 16.7148C21.3262 16.3333 22.3063 16.3333 24.2665 16.3333H28.0136C28.8696 16.3333 29.2977 16.3333 29.7005 16.43C30.0576 16.5158 30.399 16.6572 30.7122 16.8491C31.0654 17.0655 31.368 17.3682 31.9734 17.9735L35.693 21.6931C36.2983 22.2985 36.601 22.6011 36.8174 22.9543C37.0093 23.2675 37.1507 23.6089 37.2365 23.966C37.3332 24.3688 37.3332 24.7969 37.3332 25.6529Z' stroke='#1570EF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/>
+                    </svg>
+                </div>
+                <div class='toma-ready-box'>
+                    <span class='toma-ready-title'>".get_string('activityready', 'mod_tomaetest')."</span>
+                    <span class='toma-ready-subtitle'>".get_string('activityreadystudentdescription', 'mod_tomaetest')."</span>
+                </div>
+            </div>
+            <div class='toma-steps-box'>
+                <div class='toma-step-wrapper'>
+                    <div class='toma-step-number'>
+                        1
+                    </div>
+                    <div class='toma-step-content'>
+                        <span class='toma-step-title'>".get_string('activityreadystep1title', 'mod_tomaetest')."</span>
+                        <span class='toma-step-subtitle'>".get_string('activityreadystep1subtitle', 'mod_tomaetest')."</span>
+                    </div>
+                </div>
+                <div class='toma-step-wrapper'>
+                    <div class='toma-step-number'>
+                        2
+                    </div>
+                    <div class='toma-step-content'>
+                        <span class='toma-step-title'>".get_string('activityreadystep2title', 'mod_tomaetest')."</span>
+                        <span class='toma-step-subtitle'>".get_string('activityreadystep2subtitle', 'mod_tomaetest')."</span>
+                    </div>
+                </div>
+                <div class='toma-step-wrapper'>
+                    <div class='toma-step-number'>
+                        3
+                    </div>
+                    <div class='toma-step-content'>
+                        <span class='toma-step-title'>".get_string('activityreadystep3title', 'mod_tomaetest')."</span>
+                        <span class='toma-step-subtitle'>".get_string('activityreadystep3subtitle', 'mod_tomaetest')."</span>
+                    </div>
+                </div>
+            </div>
+            <div class='toma-buttons-container'>
+                <button class='toma-primary-button' onclick=\"window.open('$vixurl', '_blank')\">".get_string('openinvix', 'mod_tomaetest')."</button>
+                <button class='toma-plain-button' onclick=\"window.open('https://setup.tomaetest.com/TomaETest/setup.html', '_blank')\">".get_string('downloadvix', 'mod_tomaetest')."</button>
+            </div>
+        </div>";
     }
 }
 
