@@ -927,7 +927,65 @@ else if (has_capability("mod/tomaetest:preview", $modulecontext)) {
 }
 else if (has_capability("mod/tomaetest:attempt", $modulecontext)) {
     if ($moduleinstance->is_finished) { // activity is finished
+        echo "<style>
+            @media (min-width: 768px) {
+                .toma-container {
+                    max-width: 830px;
+                }
+            }
+            
+            .toma-container {
+                align-self: stretch;
+                margin: 0 auto;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 20px;
+
+                font-family: Inter, sans-serif;
+            }
+
+            .toma-icon-wrapper {
+                margin: 0 auto;   
+            }
+
+            .toma-finished-box {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .toma-finished-title {
+                text-align: center;
+                color: #181D27;
+                font-size: 20px;
+                font-weight: 600;
+                line-height: 30px;
+            }
+
+            .toma-finished-subtitle {
+                text-align: center;
+                color: #535862;
+                font-size: 16px;
+                font-weight: 400;
+                line-height: 24px;
+            }
+        </style>
         
+        <div class='toma-container'>
+            <div class='toma-icon-wrapper'>
+                <svg width='56' height='56' viewBox='0 0 56 56' fill='none' xmlns='http://www.w3.org/2000/svg'>
+                    <path d='M0 28C0 12.536 12.536 0 28 0C43.464 0 56 12.536 56 28C56 43.464 43.464 56 28 56C12.536 56 0 43.464 0 28Z' fill='#DCFAE6'/>
+                    <path d='M22.7502 28L26.2502 31.5L33.2502 24.5M39.6668 28C39.6668 34.4433 34.4435 39.6666 28.0002 39.6666C21.5568 39.6666 16.3335 34.4433 16.3335 28C16.3335 21.5567 21.5568 16.3333 28.0002 16.3333C34.4435 16.3333 39.6668 21.5567 39.6668 28Z' stroke='#079455' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/>
+                </svg>
+            </div>
+            <div class='toma-finished-box'>
+                <span class='toma-finished-title'>".get_string('activityfinished', 'mod_tomaetest')."</span>
+                <span class='toma-finished-subtitle'>".get_string('activityfinisheddescription', 'mod_tomaetest')."</span>
+            </div>
+        </div>";
     }
     else if (!tet_utils::is_activity_available($moduleinstance)) { // activity not started
         $checkintime = '';
