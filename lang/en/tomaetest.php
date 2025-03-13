@@ -62,3 +62,11 @@ $string['activityfinisheddescription'] = 'The activity has ended and is no longe
 $string['activitynotready'] = 'Activity not found';
 $string['activitynotreadydescription'] = 'The lecturer is still preparing this activity. Once the activity is ready, you will be able to view it and monitor students during the activity';
 $string['activitynotreadynote'] = '*You can check back later to see if the activity is ready.';
+
+$string['activityready'] = 'Activity is ready!';
+$string['activityreadydescription'] = 'The activity is is available for the students to start';
+$string['openmonitor'] = 'Open monitor';
+$string['noneditingnote1'] = 'As a non-editing teacher, you can monitor student activity but cannot modify the activity.';
+$string['noneditingnote2'] = 'You will be able to see student progress, time spent, and submission status in the monitoring system.';
+$string['noneditingnote3'] = 'If you notice any issues during the activity, please contact the course administrator.';
+$string['noneditingnote4'] = 'Students’ submissions will be automatically collected at the end of the activity period.';
