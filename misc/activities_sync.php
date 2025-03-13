@@ -32,10 +32,12 @@ function check_activities_changes() {
     global $DB;
     $relevantactivities = $DB->get_records_sql("SELECT * FROM {tomaetest} WHERE is_ready=0 OR is_finished=0");
     $coursesids = array();
+    $associativeactivities = array();
     foreach ($relevantactivities as $id => $activity) {
         if (!in_array($activity->course, $coursesids)) {
             array_push($coursesids, $activity->course);
         }
+        $associativeactivities[$activity->tet_id] = $activity;
     }
     mtrace("courses IDs: ". implode(", ", $coursesids));
     $markready = array();
@@ -53,6 +55,37 @@ function check_activities_changes() {
                 }
                 if (in_array($activity["status"], ["exported", "published"])) {
                     array_push($markfinished, $activity["ID"]);
+                }
+                if (isset($associativeactivities[$activity["ID"]])) {
+                    $currentlocalactivity = $associativeactivities[$activity["ID"]];
+                    $shouldupdaterecord = false;
+                    if (isset($currentlocalactivity->extradata) && isset($activity["dynamicAttributes"])) {
+                        $currentlocalactivity->extradata = json_decode($currentlocalactivity->extradata, true);
+                        // check & update publish time
+                        $currentpublishtime = isset($currentlocalactivity->extradata["TETExamPublishTime"]) ? $currentlocalactivity->extradata["TETExamPublishTime"] : null;
+                        $newpublishtime = isset($activity["dynamicAttributes"]["ExamPublishTime"]) ? $activity["dynamicAttributes"]["ExamPublishTime"] : null;
+                        if (isset($newpublishtime) && (!isset($currentpublishtime) || $currentpublishtime != $newpublishtime)) {
+                            $shouldupdaterecord = true;
+                            $currentlocalactivity->extradata["TETExamPublishTime"] = $newpublishtime;
+                        }
+                        // check & update start time
+                        $currentstarttime = isset($currentlocalactivity->extradata["TETExamStartTime"]) ? $currentlocalactivity->extradata["TETExamStartTime"] : null;
+                        $newstarttime = isset($activity["dynamicAttributes"]["ExamStartTime"]) ? $activity["dynamicAttributes"]["ExamStartTime"] : null;
+                        if (isset($newstarttime) && (!isset($currentstarttime) || $currentstarttime != $newstarttime)) {
+                            $shouldupdaterecord = true;
+                            $currentlocalactivity->extradata["TETExamStartTime"] = $newstarttime;
+                        }
+                        // check & update end time
+                        $currentendtime = isset($currentlocalactivity->extradata["TETExamEnd"]) ? $currentlocalactivity->extradata["TETExamEnd"] : null;
+                        $newendtime = isset($activity["dynamicAttributes"]["ExamEnd"]) ? $activity["dynamicAttributes"]["ExamEnd"] : null;
+                        if (isset($newendtime) && (!isset($currentendtime) || $currentendtime != $newendtime)) {
+                            $shouldupdaterecord = true;
+                            $currentlocalactivity->extradata["TETExamEnd"] = $newendtime;
+                        }
+                    }
+                    if ($shouldupdaterecord) {
+                        tet_utils::update_record($currentlocalactivity);
+                    }
                 }
             }
         }
