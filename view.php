@@ -1338,11 +1338,3 @@ else if (has_capability("mod/tomaetest:attempt", $modulecontext)) {
 
 echo $OUTPUT->footer();
 
-// if (quizaccess_tomaetest_utils::is_on_going($this->extradata["TETID"])) {
-//     $vixurl = new moodle_url('/mod/quiz/accessrule/tomaetest/openVIX.php', array('quizID' => $this->quiz->id));
-//     return "<br>
-//         <p> Make sure to install TomaETest first by <a target='_blank' href='https://setup.tomaetest.com/TomaETest/setup.html'>clicking here</a>.</p>
-//         After installation, please <a target='_blank' href='$vixurl'>Click here </a>to launch TomaETest client";
-// } else {
-//     return "Please come back in 30 minutes before the exam start date";
-// }
