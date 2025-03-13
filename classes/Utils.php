@@ -223,8 +223,8 @@ class tet_utils
     }
 
     public static function is_activity_available($activity) {
-        $activity->extradata = json_decode($activity->extradata, true);
-        $exampublishtime = isset($activity->extradata["TETExamPublishTime"]) ? $activity->extradata["TETExamPublishTime"] : null;
+        $decodedextradata = json_decode($activity->extradata, true);
+        $exampublishtime = isset($decodedextradata["TETExamPublishTime"]) ? $decodedextradata["TETExamPublishTime"] : null;
         $examafterpublishtime = false;
         if (isset($exampublishtime)) {
             $dbdatetime = new DateTime($exampublishtime);

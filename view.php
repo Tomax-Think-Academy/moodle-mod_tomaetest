@@ -75,7 +75,7 @@ if (has_capability("mod/tomaetest:manage", $modulecontext)) {
         $closetime = isset($decodedextradata["TETExamEnd"]) ? $decodedextradata["TETExamEnd"] : '';
     }
     $url = new moodle_url('/mod/tomaetest/misc/sso.php', array('examid' => $examid, 'courseid' => $courseid, 'location' => $location));
-    if (!$moduleinstance->is_ready) {
+    if (!$moduleinstance->is_ready) { // activity is not ready
         echo "<style>
             @media (min-width: 768px) {
                 .toma-container {
@@ -233,8 +233,7 @@ if (has_capability("mod/tomaetest:manage", $modulecontext)) {
                     </div>
                 </div>
                 <div class='toma-button-container'>
-                    <button class='toma-primary-button' onclick=\"window.open('$url', '_blank'
-                        )\">".get_string('openinassessmentstudio', 'mod_tomaetest')."</button>
+                    <button class='toma-primary-button' onclick=\"window.open('$url', '_blank')\">".get_string('openinassessmentstudio', 'mod_tomaetest')."</button>
                 </div>
             </div>
             <div class='toma-notes-box'>
@@ -270,15 +269,13 @@ if (has_capability("mod/tomaetest:manage", $modulecontext)) {
 
             document.addEventListener('DOMContentLoaded', function () {
                 const utcString = '$checkintime';
-                console.log('hello');
-                console.log(utcString);
                 if (utcString) {
                     document.getElementById('due-date').textContent = formatToLocalTime(utcString);
                 }
             });
         </script>";
     }
-    else if (!$moduleinstance->is_finished) {
+    else if (!$moduleinstance->is_finished) { // activity is ready and not finished
         if (tet_utils::is_activity_available($moduleinstance)) {
             $url = new moodle_url('/mod/tomaetest/misc/sso.php', array('courseid' => $courseid, 'location' => $location));
         }
@@ -636,7 +633,7 @@ else if (has_capability("mod/tomaetest:preview", $modulecontext)) {
     $examid=$moduleinstance->tet_id;
     $location='monitor';
     $url = new moodle_url('/mod/tomaetest/misc/sso.php', array('examid' => $examid, 'location' => $location));
-    if (!$moduleinstance->is_ready) {
+    if (!$moduleinstance->is_ready) { // activity is not ready
         echo "<style>
             @media (min-width: 768px) {
                 .toma-container {
@@ -712,7 +709,7 @@ else if (has_capability("mod/tomaetest:preview", $modulecontext)) {
             </div>
         </div>";
     }
-    else if (!$moduleinstance->is_finished) {
+    else if (!$moduleinstance->is_finished) { // activity is ready and not finished
         echo "<style>
             @media (min-width: 768px) {
                 .toma-container {
@@ -929,28 +926,165 @@ else if (has_capability("mod/tomaetest:preview", $modulecontext)) {
     }
 }
 else if (has_capability("mod/tomaetest:attempt", $modulecontext)) {
-    echo "<br><br><br>";
-    echo "<p>can attempt</p>";
-    if (tet_utils::is_activity_available($moduleinstance)) {
-        if (!$moduleinstance->is_finished) {
-            $activityid = $moduleinstance->id;
-            $cmid = $cm->id;
-            $vixurl = new moodle_url('/mod/tomaetest/misc/openVIX.php', array('activityid' => $activityid, 'cmid' => $cmid));
-            echo "<br>
-            <p> Make sure to install TomaETest first by <a target='_blank' href='https://setup.tomaetest.com/TomaETest/setup.html'>clicking here</a>.</p>
-            After installation, please <a target='_blank' href='$vixurl'>Click here </a>to launch TomaETest client";
-            // $url = new moodle_url('/mod/tomaetest/misc/sso.php', array('examid' => $examid, 'location' => $location));
-            // // TODORON: change to get_string and add to lang file
-            // echo "<a target='_blank' href='$url'>Click here to open Monitor</a>";
-        } else {
-            echo "<p>Activity is finished</p>";
+    if ($moduleinstance->is_finished) { // activity is finished
+        
+    }
+    else if (!tet_utils::is_activity_available($moduleinstance)) { // activity not started
+        $checkintime = '';
+        if (isset($moduleinstance->extradata)) {
+            $decodedextradata = json_decode($moduleinstance->extradata, true);
+            $checkintime = isset($decodedextradata["TETExamPublishTime"]) ? $decodedextradata["TETExamPublishTime"] : '';
         }
+        echo "<style>
+            @media (min-width: 768px) {
+                .toma-container {
+                    max-width: 830px;
+                }
+            }
+            
+            .toma-container {
+                align-self: stretch;
+                margin: 0 auto;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 20px;
+
+                font-family: Inter, sans-serif;
+            }
+
+            .toma-icon-wrapper {
+                margin: 0 auto;
+            }
+
+            .toma-not-ready-box {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .toma-not-ready-title {
+                text-align: center;
+                color: #181D27;
+                font-size: 20px;
+                font-weight: 600;
+                line-height: 30px;
+            }
+
+            .toma-not-ready-subtitle {
+                text-align: center;
+                color: #535862;
+                font-size: 16px;
+                font-weight: 400;
+                line-height: 24px;
+            }
+
+            .toma-available-from-wrapper {
+                display: none;
+                margin-top: 16px;
+                padding: 10px 16px;
+                align-items: flex-start;
+                gap: 6px;
+                border-radius: 8px;
+                background: #F5F5F5;
+                color: #181D27;
+                text-align: center;
+                font-size: 16px;
+                font-weight: 600;
+                line-height: 24px;
+            }
+
+            .toma-prompt-wrapper {
+                margin-top: 12px;
+                padding: 24px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 24px;
+                border-top: 1px solid #D5D7DA;
+            }
+
+            .toma-prompt-text {
+                color: #252B37;
+                text-align: center;
+                font-size: 16px;
+                font-weight: 400;
+                line-height: 24px;
+            }
+
+            .toma-primary-button {
+                padding: 10px 16px;
+                background: #1570EF;
+                border: 2px solid #F5F5F5;
+                border-radius: 8px;
+                box-shadow: 0px 0px 0px 1px rgba(10, 13, 18, 0.18) inset, 0px -2px 0px 0px  rgba(10, 13, 18, 0.05) inset, 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
+                color: white;
+                cursor: pointer;
+                font-size: 16px;
+                font-weight: 600;
+                line-height: 24px;
+            }
+        </style>
+        
+        <div class='toma-container'>
+            <div class='toma-icon-wrapper'>
+                <svg width='56' height='56' viewBox='0 0 56 56' fill='none' xmlns='http://www.w3.org/2000/svg'>
+                    <path d='M0 28C0 12.536 12.536 0 28 0C43.464 0 56 12.536 56 28C56 43.464 43.464 56 28 56C12.536 56 0 43.464 0 28Z' fill='#F5F5F5'/>
+                    <path d='M28.0002 21V28L32.6668 30.3333M39.6668 28C39.6668 34.4433 34.4435 39.6666 28.0002 39.6666C21.5568 39.6666 16.3335 34.4433 16.3335 28C16.3335 21.5567 21.5568 16.3333 28.0002 16.3333C34.4435 16.3333 39.6668 21.5567 39.6668 28Z' stroke='#717680' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/>
+                </svg>
+            </div>
+            <div class='toma-not-ready-box'>
+                <span class='toma-not-ready-title'>".get_string('activitynotavailable', 'mod_tomaetest')."</span>
+                <span class='toma-not-ready-subtitle'>".get_string('activitynotavailabledescription', 'mod_tomaetest')."</span>
+                <div class='toma-available-from-wrapper'>
+                    <span class='toma-available-from-text'>".get_string('availablefrom', 'mod_tomaetest').": </span>
+                    <span id='start-date' class='toma-available-from-text'>-</span>
+                </div>
+            </div>
+            <div class='toma-prompt-wrapper'>
+                <span class='toma-prompt-text'>".get_string('downloadvixprompt', 'mod_tomaetest')."</span>
+                <button class='toma-primary-button' onclick=\"window.open('https://setup.tomaetest.com/TomaETest/setup.html', '_blank')\">".get_string('downloadvix', 'mod_tomaetest')."</button>
+            </div>
+        </div>
+
+        <script>
+            function formatToLocalTime(utcDateString) {
+                const date = new Date(utcDateString);
+                // Get individual parts of the date
+                const weekday = date.toLocaleString(undefined, { weekday: 'long' });  // Sunday
+                const day = date.getDate().toString().padStart(2, '0');  // 11
+                const month = date.toLocaleString(undefined, { month: 'long' });  // February
+                const year = date.getFullYear();  // 2024
+                const time = date.toLocaleString(undefined, {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                }).replace(/^0/, '');  // Remove leading zero from hours
+
+                // Construct the final formatted string
+                return `\${weekday}, \${day} \${month} \${year}, \${time}`;
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                const utcString = '$checkintime';
+                if (utcString) {
+                    document.getElementById('start-date').textContent = formatToLocalTime(utcString);
+                    const element = document.querySelector('.toma-available-from-wrapper');
+                    if (element) {
+                        element.style.display = 'flex';
+                    }
+                }
+            });
+        </script>";
     }
-    else {
-        // TODORON: change to get_string and add to lang file
-        echo "<p>Activity is not yet ready</p>";
+    else { // activity is active
+        $activityid = $moduleinstance->id;
+        $cmid = $cm->id;
+        $vixurl = new moodle_url('/mod/tomaetest/misc/openVIX.php', array('activityid' => $activityid, 'cmid' => $cmid));
     }
-    // echo "<p>" . json_encode(tet_utils::get_course_students($course->id)) . "</p>";
 }
 
 echo $OUTPUT->footer();

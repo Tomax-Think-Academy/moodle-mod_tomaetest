@@ -70,3 +70,9 @@ $string['noneditingnote1'] = 'As a non-editing teacher, you can monitor student 
 $string['noneditingnote2'] = 'You will be able to see student progress, time spent, and submission status in the monitoring system.';
 $string['noneditingnote3'] = 'If you notice any issues during the activity, please contact the course administrator.';
 $string['noneditingnote4'] = 'Students’ submissions will be automatically collected at the end of the activity period.';
+
+$string['activitynotavailable'] = 'Activity is not yet available';
+$string['activitynotavailabledescription'] = 'You will be able to access this activity when it becomes available';
+$string['availablefrom'] = 'Activity will be Available on';
+$string['downloadvixprompt'] = 'We recommend downloading VIX software before your activity, if you still don’t own it. Install it early to ensure a smooth activity experience and avoid last-minute technical issues.';
+$string['downloadvix'] = 'Download VIX';
