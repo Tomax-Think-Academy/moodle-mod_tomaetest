@@ -64,7 +64,7 @@ echo $OUTPUT->header();
 if (has_capability("mod/tomaetest:manage", $modulecontext)) {
     $examid=$moduleinstance->tet_id;
     $courseid=tet_utils::get_course_tet_id($course->id);
-    $location='activity-settings';
+    $location='assessment-studio';
     $checkintime = '';
     $starttime = '';
     $closetime = '';
@@ -374,6 +374,7 @@ if (has_capability("mod/tomaetest:manage", $modulecontext)) {
                 align-items: flex-start;
                 gap: 20px;
                 align-self: stretch;
+                color: black;
             }
 
             .toma-card {
@@ -543,6 +544,87 @@ if (has_capability("mod/tomaetest:manage", $modulecontext)) {
                 }
             });
         </script>";
+    }
+    else { // activity is finished
+        $url = new moodle_url('/mod/tomaetest/misc/sso.php', array('courseid' => $courseid, 'location' => $location));
+        echo "<style>
+            @media (min-width: 768px) {
+                .toma-container {
+                    max-width: 830px;
+                }
+            }
+            
+            .toma-container {
+                align-self: stretch;
+                margin: 0 auto;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 20px;
+
+                font-family: Inter, sans-serif;
+            }
+
+            .toma-icon-wrapper {
+                margin: 0 auto;   
+            }
+
+            .toma-finished-box {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .toma-finished-title {
+                color: #181D27;
+                font-size: 20px;
+                font-weight: 600;
+                line-height: 30px;
+            }
+
+            .toma-finished-subtitle {
+                color: #535862;
+                font-size: 16px;
+                font-weight: 400;
+                line-height: 24px;
+            }
+            
+            .toma-button-container {
+                display: flex;
+                justify-content: start;
+            }
+
+            .toma-primary-button {
+                padding: 10px 16px;
+                background: #1570EF;
+                border: 2px solid var(--Colors-Border-border-tertiary, #F5F5F5);
+                border-radius: 8px;
+                box-shadow: 0px 0px 0px 1px rgba(10, 13, 18, 0.18) inset, 0px -2px 0px 0px  rgba(10, 13, 18, 0.05) inset, 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
+                color: white;
+                cursor: pointer;
+                font-size: 16px;
+                font-weight: 600;
+                line-height: 24px;
+            }
+        </style>
+        
+        <div class='toma-container'>
+            <div class='toma-icon-wrapper'>
+                <svg width='56' height='56' viewBox='0 0 56 56' fill='none' xmlns='http://www.w3.org/2000/svg'>
+                    <path d='M0 28C0 12.536 12.536 0 28 0C43.464 0 56 12.536 56 28C56 43.464 43.464 56 28 56C12.536 56 0 43.464 0 28Z' fill='#DCFAE6'/>
+                    <path d='M37.3334 21L24.5001 33.8333L18.6667 28' stroke='#079455' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/>
+                </svg>
+            </div>
+            <div class='toma-finished-box'>
+                <span class='toma-finished-title'>".get_string('activityfinished', 'mod_tomaetest')."</span>
+                <span class='toma-finished-subtitle'>".get_string('activityfinisheddescription', 'mod_tomaetest')."</span>
+            </div>
+            <div class='toma-button-container'>
+                <button class='toma-primary-button' onclick=\"window.open('$url', '_blank')\">".get_string('openinassessmentstudio', 'mod_tomaetest')."</button>
+            </div>
+        </div>";
     }
 }
 else if (has_capability("mod/tomaetest:preview", $modulecontext)) {

@@ -57,5 +57,5 @@ $string['checkinstarttime'] = 'Check-in start time';
 $string['actualstarttime'] = 'Actual start time';
 $string['dateclosed'] = 'Date closed';
 $string['dateclosednote'] = 'Note: Closing time does not include extended time arrangements.';
-// $string[''] = '';
-// $string[''] = '';
+$string['activityfinished'] = 'Activity is finished';
+$string['activityfinisheddescription'] = 'The activity has ended and is no longer available for submission.';
