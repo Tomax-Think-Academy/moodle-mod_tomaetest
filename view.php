@@ -619,7 +619,7 @@ if (has_capability("mod/tomaetest:manage", $modulecontext)) {
             <div class='toma-icon-wrapper'>
                 <svg width='56' height='56' viewBox='0 0 56 56' fill='none' xmlns='http://www.w3.org/2000/svg'>
                     <path d='M0 28C0 12.536 12.536 0 28 0C43.464 0 56 12.536 56 28C56 43.464 43.464 56 28 56C12.536 56 0 43.464 0 28Z' fill='#DCFAE6'/>
-                    <path d='M37.3334 21L24.5001 33.8333L18.6667 28' stroke='#079455' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/>
+                    <path d='M22.7502 28L26.2502 31.5L33.2502 24.5M39.6668 28C39.6668 34.4433 34.4435 39.6666 28.0002 39.6666C21.5568 39.6666 16.3335 34.4433 16.3335 28C16.3335 21.5567 21.5568 16.3333 28.0002 16.3333C34.4435 16.3333 39.6668 21.5567 39.6668 28Z' stroke='#079455' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/>
                 </svg>
             </div>
             <div class='toma-finished-box'>
@@ -635,6 +635,7 @@ if (has_capability("mod/tomaetest:manage", $modulecontext)) {
 else if (has_capability("mod/tomaetest:preview", $modulecontext)) {
     $examid=$moduleinstance->tet_id;
     $location='monitor';
+    $url = new moodle_url('/mod/tomaetest/misc/sso.php', array('examid' => $examid, 'location' => $location));
     if (!$moduleinstance->is_ready) {
         echo "<style>
             @media (min-width: 768px) {
@@ -712,7 +713,6 @@ else if (has_capability("mod/tomaetest:preview", $modulecontext)) {
         </div>";
     }
     else if (!$moduleinstance->is_finished) {
-        $url = new moodle_url('/mod/tomaetest/misc/sso.php', array('examid' => $examid, 'location' => $location));
         echo "<style>
             @media (min-width: 768px) {
                 .toma-container {
@@ -816,8 +816,7 @@ else if (has_capability("mod/tomaetest:preview", $modulecontext)) {
                     <svg width='56' height='56' viewBox='0 0 56 56' fill='none' xmlns='http://www.w3.org/2000/svg'>
                         <path d='M0 28C0 12.536 12.536 0 28 0C43.464 0 56 12.536 56 28C56 43.464 43.464 56 28 56C12.536 56 0 43.464 0 28Z' fill='#D1E9FF'/>
                         <path d='M30.3332 16.6478V21.4667C30.3332 22.1201 30.3332 22.4468 30.4603 22.6964C30.5722 22.9159 30.7507 23.0944 30.9702 23.2063C31.2197 23.3334 31.5464 23.3334 32.1998 23.3334H37.0188M30.3332 33.8333H23.3332M32.6665 29.1667H23.3332M37.3332 25.6529V34.0667C37.3332 36.0268 37.3332 37.0069 36.9517 37.7556C36.6161 38.4142 36.0807 38.9496 35.4221 39.2852C34.6734 39.6667 33.6934 39.6667 31.7332 39.6667H24.2665C22.3063 39.6667 21.3262 39.6667 20.5775 39.2852C19.919 38.9496 19.3835 38.4142 19.048 37.7556C18.6665 37.0069 18.6665 36.0268 18.6665 34.0667V21.9333C18.6665 19.9731 18.6665 18.9931 19.048 18.2444C19.3835 17.5858 19.919 17.0504 20.5775 16.7148C21.3262 16.3333 22.3063 16.3333 24.2665 16.3333H28.0136C28.8696 16.3333 29.2977 16.3333 29.7005 16.43C30.0576 16.5158 30.399 16.6572 30.7122 16.8491C31.0654 17.0655 31.368 17.3682 31.9734 17.9735L35.693 21.6931C36.2983 22.2985 36.601 22.6011 36.8174 22.9543C37.0093 23.2675 37.1507 23.6089 37.2365 23.966C37.3332 24.3688 37.3332 24.7969 37.3332 25.6529Z' stroke='#1570EF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/>
-                        </svg>
-                                        
+                    </svg>
                 </div>
                 <div class='toma-ready-box'>
                     <span class='toma-ready-title'>".get_string('activityready', 'mod_tomaetest')."</span>
@@ -847,6 +846,86 @@ else if (has_capability("mod/tomaetest:preview", $modulecontext)) {
         </div>";
     }
     else { // activity is finished
+        echo "<style>
+            @media (min-width: 768px) {
+                .toma-container {
+                    max-width: 830px;
+                }
+            }
+            
+            .toma-container {
+                align-self: stretch;
+                margin: 0 auto;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 20px;
+
+                font-family: Inter, sans-serif;
+            }
+
+            .toma-icon-wrapper {
+                margin: 0 auto;   
+            }
+
+            .toma-finished-box {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .toma-finished-title {
+                text-align: center;
+                color: #181D27;
+                font-size: 20px;
+                font-weight: 600;
+                line-height: 30px;
+            }
+
+            .toma-finished-subtitle {
+                text-align: center;
+                color: #535862;
+                font-size: 16px;
+                font-weight: 400;
+                line-height: 24px;
+            }
+            
+            .toma-button-container {
+                display: flex;
+                justify-content: start;
+            }
+
+            .toma-primary-button {
+                padding: 10px 16px;
+                background: #1570EF;
+                border: 2px solid #F5F5F5;
+                border-radius: 8px;
+                box-shadow: 0px 0px 0px 1px rgba(10, 13, 18, 0.18) inset, 0px -2px 0px 0px  rgba(10, 13, 18, 0.05) inset, 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
+                color: white;
+                cursor: pointer;
+                font-size: 16px;
+                font-weight: 600;
+                line-height: 24px;
+            }
+        </style>
+        
+        <div class='toma-container'>
+            <div class='toma-icon-wrapper'>
+                <svg width='56' height='56' viewBox='0 0 56 56' fill='none' xmlns='http://www.w3.org/2000/svg'>
+                    <path d='M0 28C0 12.536 12.536 0 28 0C43.464 0 56 12.536 56 28C56 43.464 43.464 56 28 56C12.536 56 0 43.464 0 28Z' fill='#DCFAE6'/>
+                    <path d='M22.7502 28L26.2502 31.5L33.2502 24.5M39.6668 28C39.6668 34.4433 34.4435 39.6666 28.0002 39.6666C21.5568 39.6666 16.3335 34.4433 16.3335 28C16.3335 21.5567 21.5568 16.3333 28.0002 16.3333C34.4435 16.3333 39.6668 21.5567 39.6668 28Z' stroke='#079455' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/>
+                </svg>
+            </div>
+            <div class='toma-finished-box'>
+                <span class='toma-finished-title'>".get_string('activityfinished', 'mod_tomaetest')."</span>
+                <span class='toma-finished-subtitle'>".get_string('activityfinisheddescription', 'mod_tomaetest')."</span>
+            </div>
+            <div class='toma-button-container'>
+                <button class='toma-primary-button' onclick=\"window.open('$url', '_blank')\">".get_string('openmonitor', 'mod_tomaetest')."</button>
+            </div>
+        </div>";
     }
 }
 else if (has_capability("mod/tomaetest:attempt", $modulecontext)) {
