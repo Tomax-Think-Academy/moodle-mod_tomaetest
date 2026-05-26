@@ -972,6 +972,24 @@ else if (has_capability("mod/tomaetest:attempt", $modulecontext)) {
                 font-weight: 400;
                 line-height: 24px;
             }
+
+            .toma-button-container {
+                display: flex;
+                justify-content: center;
+            }
+
+            .toma-primary-button {
+                padding: 10px 16px;
+                background: #1570EF;
+                border: 2px solid #F5F5F5;
+                border-radius: 8px;
+                box-shadow: 0px 0px 0px 1px rgba(10, 13, 18, 0.18) inset, 0px -2px 0px 0px rgba(10, 13, 18, 0.05) inset, 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
+                color: white;
+                cursor: pointer;
+                font-size: 16px;
+                font-weight: 600;
+                line-height: 24px;
+            }
         </style>
         
         <div class='toma-container'>
@@ -984,8 +1002,27 @@ else if (has_capability("mod/tomaetest:attempt", $modulecontext)) {
             <div class='toma-finished-box'>
                 <span class='toma-finished-title'>".get_string('activityfinished', 'mod_tomaetest')."</span>
                 <span class='toma-finished-subtitle'>".get_string('activityfinisheddescription', 'mod_tomaetest')."</span>
-            </div>
-        </div>";
+            </div>";
+
+        $graderecord = $moduleinstance->is_graded
+            ? $DB->get_record('tomaetest_grades', array('activity' => $moduleinstance->id, 'userid' => $USER->id))
+            : false;
+        if ($graderecord) {
+            $notebookurl = new moodle_url('/mod/tomaetest/getnotebook.php', array('cmid' => $cm->id));
+            echo "<div class='toma-button-container'>
+                <button class='toma-primary-button' onclick=\"window.open('{$notebookurl}', '_blank')\">
+                    " . get_string('viewgradednotebook', 'mod_tomaetest') . "
+                </button>
+            </div>";
+        } else {
+            echo "<div class='toma-button-container' title='" . get_string('notebooknotready', 'mod_tomaetest') . "'>
+                <button class='toma-primary-button' disabled style='opacity:0.5; cursor:not-allowed;'>
+                    " . get_string('viewgradednotebook', 'mod_tomaetest') . "
+                </button>
+            </div>";
+        }
+
+        echo "</div>";
     }
     else if (!tet_utils::is_activity_available($moduleinstance)) { // activity not started
         $checkintime = '';

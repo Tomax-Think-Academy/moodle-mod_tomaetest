@@ -85,3 +85,8 @@ $string['activityreadystep2subtitle'] = 'לאחר התקנת VIX, לחצו על 
 $string['activityreadystep3title'] = 'השלימו והגישו את הפעילות';
 $string['activityreadystep3subtitle'] = 'עקבו אחרי ההנחיות ב־VIX כדי להשלים את הפעילות. ודאו שאתם מגישים לפני המועד.';
 $string['openinvix'] = 'פתחו את הפעילות ב־VIX';
+
+$string['viewgradednotebook'] = 'צפייה במחברת הבחינה שנבדקה';
+$string['notebooknotready'] = 'מחברת הבחינה עדיין אינה זמינה.';
+$string['notebookdeleted'] = 'מחברת הבחינה נמחקה.';
+$string['contactadmin'] = 'אירעה שגיאה. אנא פנה למנהל המערכת.';
