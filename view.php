@@ -76,140 +76,7 @@ if (has_capability("mod/tomaetest:manage", $modulecontext)) {
     }
     $url = new moodle_url('/mod/tomaetest/misc/sso.php', array('examid' => $examid, 'courseid' => $courseid, 'location' => $location));
     if (!$moduleinstance->is_ready) { // activity is not ready
-        echo "<style>
-            @media (min-width: 768px) {
-                .toma-container {
-                    max-width: 830px;
-                }
-            }
-
-            .toma-container {
-                align-self: stretch;
-                margin: 0 auto;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                gap: 32px;
-
-                font-family: Inter, sans-serif;
-            }
-
-            [dir='rtl'] .toma-warning-box {
-                border-right: 6px solid #FDB022;
-            }
-
-            .toma-warning-box {
-                border-left: 6px solid #FDB022;
-                align-self: stretch;
-                padding: 12px 20px;
-                background: #FEF0C7;
-                border-radius: 6px;
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-start;
-                gap: 8px;
-            }
-
-            .toma-status-container {
-                display: flex;
-                gap: 20px;
-                align-items: center;
-
-                color: black;
-                font-size: 16px;
-                line-height: 24px;
-            }
-
-            .toma-status-item {
-                display: flex;
-                flex-direction: row;
-                justify-content: center;
-                gap: 6px;
-            }
-
-            .toma-status-label {
-                font-weight: 600;
-            }
-
-            .toma-status-text,
-            .toma-status-message {
-                font-weight: 400;
-            }
-
-            .toma-management-box {
-                align-self: stretch;
-                padding: 24px;
-                border-radius: 12px;
-                border: 1px solid #D5D7DA;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                gap: 20px;
-            }
-
-            .toma-management-text {
-                display: flex;
-                flex-direction: column;
-                gap: 6px;
-                color: black;
-            }
-
-            .toma-management-title {
-                font-size: 20px;
-                font-weight: 600;
-                line-height: 30px;
-            }
-
-            .toma-management-description {
-                font-size: 16px;
-                font-weight: 400;
-                line-height: 24px;
-            }
-
-            .toma-button-container {
-                display: flex;
-                justify-content: start;
-            }
-
-            .toma-primary-button {
-                padding: 10px 16px;
-                background: #1570EF;
-                border: 2px solid #F5F5F5;
-                border-radius: 8px;
-                box-shadow: 0px 0px 0px 1px rgba(10, 13, 18, 0.18) inset, 0px -2px 0px 0px rgba(10, 13, 18, 0.05) inset, 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
-                color: white;
-                cursor: pointer;
-                font-size: 16px;
-                font-weight: 600;
-                line-height: 24px;
-            }
-
-            .toma-notes-box {
-                align-self: stretch;
-                padding: 24px;
-                background: #F5F5F5;
-                border-radius: 12px;
-                display: flex;
-                flex-direction: column;
-                gap: 12px;
-                color: #181D27;
-            }
-
-            .toma-notes-title {
-                font-size: 18px;
-                font-weight: 500;
-                line-height: 28px;
-            }
-
-            .toma-notes-text {
-                font-size: 16px;
-                font-weight: 400;
-                line-height: 24px;
-            }
-        </style>
-
-        <div class='toma-container'>
+        echo "<div class='toma-container' style='gap: 32px'>
             <div class='toma-warning-box'>
                 <div class='toma-status-container'>
                     <div class='toma-status-item'>
@@ -279,184 +146,7 @@ if (has_capability("mod/tomaetest:manage", $modulecontext)) {
         if (tet_utils::is_activity_available($moduleinstance)) {
             $url = new moodle_url('/mod/tomaetest/misc/sso.php', array('courseid' => $courseid, 'location' => $location));
         }
-        echo "<style>
-            @media (min-width: 768px) {
-                .toma-container {
-                    max-width: 830px;
-                }
-            }
-            
-            .toma-container {
-                align-self: stretch;
-                margin: 0 auto;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                gap: 32px;
-
-                font-family: Inter, sans-serif;
-            }
-
-            [dir='rtl'] .toma-success-box {
-                border-right: 6px solid #47CD89;
-            }
-
-            .toma-success-box {
-                border-left: 6px solid #47CD89;
-                align-self: stretch;
-                padding: 12px 20px;
-                background: #ECFDF3;
-                border-radius: 6px;
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-start;
-                gap: 8px;
-            }
-
-            .toma-status-container {
-                display: flex;
-                gap: 20px;
-                align-items: center;
-
-                color: black;
-                font-size: 16px;
-                line-height: 24px;
-            }
-
-            .toma-status-item {
-                display: flex;
-                flex-direction: row;
-                justify-content: center;
-                gap: 6px;
-            }
-
-            .toma-status-label {
-                font-weight: 600;
-            }
-
-            .toma-status-text, .toma-status-message {
-                font-weight: 400;
-            }
-
-            .toma-management-box {
-                align-self: stretch;
-                padding: 24px;
-                border-radius: 12px;
-                border: 1px solid #D5D7DA;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                gap: 20px;
-            }
-
-            .toma-management-text {
-                display: flex;
-                flex-direction: column;
-                gap: 6px;
-                color: black;
-            }
-
-            .toma-management-title {
-                font-size: 20px;
-                font-weight: 600;
-                line-height: 30px;
-            }
-
-            .toma-management-description {
-                font-size: 16px;
-                font-weight: 400;
-                line-height: 24px;
-            }
-
-            .toma-management-cards {
-                display: flex;
-                align-items: flex-start;
-                gap: 20px;
-                align-self: stretch;
-                color: black;
-            }
-
-            .toma-card {
-                align-self: stretch;
-                display: flex;
-                padding: 12px;
-                align-items: flex-start;
-                gap: 20px;
-                flex: 1 0 0;
-                border-radius: 8px;
-                border: 1px solid #D5D7DA;
-                background:#FAFAFA;
-            }
-
-            .toma-info-group {
-                display: flex;
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 6px;
-            }
-            .toma-info-label {
-                font-size: 14px;
-                font-weight: 400;
-                line-height: 20px;
-            }
-
-            .toma-info-value {
-                font-size: 16px;
-                font-weight: 600;
-                line-height: 24px;
-            }
-
-            .toma-info-note {
-                color: #717680;
-                font-size: 14px;
-                font-weight: 400;
-                line-height: 20px;
-            }
-            
-            .toma-button-container {
-                display: flex;
-                justify-content: start;
-            }
-
-            .toma-primary-button {
-                padding: 10px 16px;
-                background: #1570EF;
-                border: 2px solid #F5F5F5;
-                border-radius: 8px;
-                box-shadow: 0px 0px 0px 1px rgba(10, 13, 18, 0.18) inset, 0px -2px 0px 0px  rgba(10, 13, 18, 0.05) inset, 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
-                color: white;
-                cursor: pointer;
-                font-size: 16px;
-                font-weight: 600;
-                line-height: 24px;
-            }
-
-            .toma-notes-box {
-                align-self: stretch;
-                padding: 24px;
-                background: #F5F5F5;
-                border-radius: 12px;
-                display: flex;
-                flex-direction: column;
-                gap: 12px;
-                color: #181D27;
-            }
-
-            .toma-notes-title {
-                font-size: 18px;
-                font-weight: 500;
-                line-height: 28px;
-            }
-
-            .toma-notes-text {
-                font-size: 16px;
-                font-weight: 400;
-                line-height: 24px;
-            }
-        </style>
-        
-        <div class='toma-container'>
+        echo "<div class='toma-container' style='gap: 32px'>
             <div class='toma-success-box'>
                 <div class='toma-status-container'>
                     <div class='toma-status-item'>
@@ -547,72 +237,7 @@ if (has_capability("mod/tomaetest:manage", $modulecontext)) {
     }
     else { // activity is finished
         $url = new moodle_url('/mod/tomaetest/misc/sso.php', array('courseid' => $courseid, 'location' => $location));
-        echo "<style>
-            @media (min-width: 768px) {
-                .toma-container {
-                    max-width: 830px;
-                }
-            }
-            
-            .toma-container {
-                align-self: stretch;
-                margin: 0 auto;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                gap: 20px;
-
-                font-family: Inter, sans-serif;
-            }
-
-            .toma-icon-wrapper {
-                margin: 0 auto;   
-            }
-
-            .toma-finished-box {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 8px;
-            }
-
-            .toma-finished-title {
-                text-align: center;
-                color: #181D27;
-                font-size: 20px;
-                font-weight: 600;
-                line-height: 30px;
-            }
-
-            .toma-finished-subtitle {
-                text-align: center;
-                color: #535862;
-                font-size: 16px;
-                font-weight: 400;
-                line-height: 24px;
-            }
-            
-            .toma-button-container {
-                display: flex;
-                justify-content: start;
-            }
-
-            .toma-primary-button {
-                padding: 10px 16px;
-                background: #1570EF;
-                border: 2px solid #F5F5F5;
-                border-radius: 8px;
-                box-shadow: 0px 0px 0px 1px rgba(10, 13, 18, 0.18) inset, 0px -2px 0px 0px  rgba(10, 13, 18, 0.05) inset, 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
-                color: white;
-                cursor: pointer;
-                font-size: 16px;
-                font-weight: 600;
-                line-height: 24px;
-            }
-        </style>
-        
-        <div class='toma-container'>
+        echo "<div class='toma-container'>
             <div class='toma-icon-wrapper'>
                 <svg width='56' height='56' viewBox='0 0 56 56' fill='none' xmlns='http://www.w3.org/2000/svg'>
                     <path d='M0 28C0 12.536 12.536 0 28 0C43.464 0 56 12.536 56 28C56 43.464 43.464 56 28 56C12.536 56 0 43.464 0 28Z' fill='#DCFAE6'/>
@@ -634,66 +259,7 @@ else if (has_capability("mod/tomaetest:preview", $modulecontext)) {
     $location='monitor';
     $url = new moodle_url('/mod/tomaetest/misc/sso.php', array('examid' => $examid, 'location' => $location));
     if (!$moduleinstance->is_ready) { // activity is not ready
-        echo "<style>
-            @media (min-width: 768px) {
-                .toma-container {
-                    max-width: 830px;
-                }
-            }
-            
-            .toma-container {
-                align-self: stretch;
-                margin: 0 auto;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                gap: 20px;
-
-                font-family: Inter, sans-serif;
-            }
-
-            .toma-icon-wrapper {
-                margin: 0 auto;   
-            }
-
-            .toma-not-ready-box {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 8px;
-            }
-
-            .toma-not-ready-title {
-                text-align: center;
-                color: #181D27;
-                font-size: 20px;
-                font-weight: 600;
-                line-height: 30px;
-            }
-
-            .toma-not-ready-subtitle {
-                text-align: center;
-                color: #535862;
-                font-size: 16px;
-                font-weight: 400;
-                line-height: 24px;
-            }
-
-            .toma-note-wrapper {
-                margin-top: 12px;
-            }
-
-            .toma-note-text {
-                text-align: center;
-                color: #535862;
-                font-size: 12px;
-                font-weight: 400;
-                line-height: 18px;
-            }
-        </style>
-        
-        <div class='toma-container'>
+        echo "<div class='toma-container'>
             <div class='toma-icon-wrapper'>
                 <svg width='56' height='56' viewBox='0 0 56 56' fill='none' xmlns='http://www.w3.org/2000/svg'>
                     <path d='M0 28C0 12.536 12.536 0 28 0C43.464 0 56 12.536 56 28C56 43.464 43.464 56 28 56C12.536 56 0 43.464 0 28Z' fill='#F5F5F5'/>
@@ -710,104 +276,7 @@ else if (has_capability("mod/tomaetest:preview", $modulecontext)) {
         </div>";
     }
     else if (!$moduleinstance->is_finished) { // activity is ready and not finished
-        echo "<style>
-            @media (min-width: 768px) {
-                .toma-container {
-                    max-width: 830px;
-                }
-            }
-            
-            .toma-container {
-                align-self: stretch;
-                margin: 0 auto;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                gap: 32px;
-
-                font-family: Inter, sans-serif;
-            }
-
-            .toma-sub-container {
-                align-self: stretch;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                gap: 20px;
-            }
-
-            .toma-icon-wrapper {
-                margin: 0 auto;   
-            }
-
-            .toma-ready-box {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 8px;
-            }
-
-            .toma-ready-title {
-                text-align: center;
-                color: #181D27;
-                font-size: 20px;
-                font-weight: 600;
-                line-height: 30px;
-            }
-
-            .toma-ready-subtitle {
-                text-align: center;
-                color: #000000;
-                font-size: 16px;
-                font-weight: 400;
-                line-height: 24px;
-            }
-
-            .toma-button-container {
-                display: flex;
-                justify-content: start;
-            }
-
-            .toma-primary-button {
-                padding: 10px 16px;
-                background: #1570EF;
-                border: 2px solid #F5F5F5;
-                border-radius: 8px;
-                box-shadow: 0px 0px 0px 1px rgba(10, 13, 18, 0.18) inset, 0px -2px 0px 0px  rgba(10, 13, 18, 0.05) inset, 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
-                color: white;
-                cursor: pointer;
-                font-size: 16px;
-                font-weight: 600;
-                line-height: 24px;
-            }
-
-            .toma-notes-box {
-                align-self: stretch;
-                padding: 24px;
-                background: #F5F5F5;
-                border-radius: 12px;
-                display: flex;
-                flex-direction: column;
-                gap: 12px;
-                color: #181D27;
-            }
-
-            .toma-notes-title {
-                font-size: 18px;
-                font-weight: 500;
-                line-height: 28px;
-            }
-
-            .toma-notes-text {
-                font-size: 16px;
-                font-weight: 400;
-                line-height: 24px;
-            }
-        </style>
-        
-        <div class='toma-container'>
+        echo "<div class='toma-container' style='gap: 32px'>
             <div class='toma-sub-container'>
                 <div class='toma-icon-wrapper'>
                     <svg width='56' height='56' viewBox='0 0 56 56' fill='none' xmlns='http://www.w3.org/2000/svg'>
@@ -843,72 +312,7 @@ else if (has_capability("mod/tomaetest:preview", $modulecontext)) {
         </div>";
     }
     else { // activity is finished
-        echo "<style>
-            @media (min-width: 768px) {
-                .toma-container {
-                    max-width: 830px;
-                }
-            }
-            
-            .toma-container {
-                align-self: stretch;
-                margin: 0 auto;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                gap: 20px;
-
-                font-family: Inter, sans-serif;
-            }
-
-            .toma-icon-wrapper {
-                margin: 0 auto;   
-            }
-
-            .toma-finished-box {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 8px;
-            }
-
-            .toma-finished-title {
-                text-align: center;
-                color: #181D27;
-                font-size: 20px;
-                font-weight: 600;
-                line-height: 30px;
-            }
-
-            .toma-finished-subtitle {
-                text-align: center;
-                color: #535862;
-                font-size: 16px;
-                font-weight: 400;
-                line-height: 24px;
-            }
-            
-            .toma-button-container {
-                display: flex;
-                justify-content: start;
-            }
-
-            .toma-primary-button {
-                padding: 10px 16px;
-                background: #1570EF;
-                border: 2px solid #F5F5F5;
-                border-radius: 8px;
-                box-shadow: 0px 0px 0px 1px rgba(10, 13, 18, 0.18) inset, 0px -2px 0px 0px  rgba(10, 13, 18, 0.05) inset, 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
-                color: white;
-                cursor: pointer;
-                font-size: 16px;
-                font-weight: 600;
-                line-height: 24px;
-            }
-        </style>
-        
-        <div class='toma-container'>
+        echo "<div class='toma-container'>
             <div class='toma-icon-wrapper'>
                 <svg width='56' height='56' viewBox='0 0 56 56' fill='none' xmlns='http://www.w3.org/2000/svg'>
                     <path d='M0 28C0 12.536 12.536 0 28 0C43.464 0 56 12.536 56 28C56 43.464 43.464 56 28 56C12.536 56 0 43.464 0 28Z' fill='#DCFAE6'/>
@@ -927,54 +331,7 @@ else if (has_capability("mod/tomaetest:preview", $modulecontext)) {
 }
 else if (has_capability("mod/tomaetest:attempt", $modulecontext)) {
     if ($moduleinstance->is_finished) { // activity is finished
-        echo "<style>
-            @media (min-width: 768px) {
-                .toma-container {
-                    max-width: 830px;
-                }
-            }
-            
-            .toma-container {
-                align-self: stretch;
-                margin: 0 auto;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                gap: 20px;
-
-                font-family: Inter, sans-serif;
-            }
-
-            .toma-icon-wrapper {
-                margin: 0 auto;   
-            }
-
-            .toma-finished-box {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 8px;
-            }
-
-            .toma-finished-title {
-                text-align: center;
-                color: #181D27;
-                font-size: 20px;
-                font-weight: 600;
-                line-height: 30px;
-            }
-
-            .toma-finished-subtitle {
-                text-align: center;
-                color: #535862;
-                font-size: 16px;
-                font-weight: 400;
-                line-height: 24px;
-            }
-        </style>
-        
-        <div class='toma-container'>
+        echo "<div class='toma-container'>
             <div class='toma-icon-wrapper'>
                 <svg width='56' height='56' viewBox='0 0 56 56' fill='none' xmlns='http://www.w3.org/2000/svg'>
                     <path d='M0 28C0 12.536 12.536 0 28 0C43.464 0 56 12.536 56 28C56 43.464 43.464 56 28 56C12.536 56 0 43.464 0 28Z' fill='#DCFAE6'/>
@@ -984,8 +341,27 @@ else if (has_capability("mod/tomaetest:attempt", $modulecontext)) {
             <div class='toma-finished-box'>
                 <span class='toma-finished-title'>".get_string('activityfinished', 'mod_tomaetest')."</span>
                 <span class='toma-finished-subtitle'>".get_string('activityfinisheddescription', 'mod_tomaetest')."</span>
-            </div>
-        </div>";
+            </div>";
+
+        $graderecord = $moduleinstance->is_graded
+            ? $DB->get_record('tomaetest_grades', array('activity' => $moduleinstance->id, 'userid' => $USER->id))
+            : false;
+        if ($graderecord) {
+            $notebookurl = new moodle_url('/mod/tomaetest/getnotebook.php', array('cmid' => $cm->id));
+            echo "<div class='toma-button-container'>
+                <button class='toma-primary-button' onclick=\"window.open('{$notebookurl}', '_blank')\">
+                    " . get_string('viewgradednotebook', 'mod_tomaetest') . "
+                </button>
+            </div>";
+        } else {
+            echo "<div class='toma-button-container' title='" . get_string('notebooknotready', 'mod_tomaetest') . "'>
+                <button class='toma-primary-button' disabled>
+                    " . get_string('viewgradednotebook', 'mod_tomaetest') . "
+                </button>
+            </div>";
+        }
+
+        echo "</div>";
     }
     else if (!tet_utils::is_activity_available($moduleinstance)) { // activity not started
         $checkintime = '';
@@ -993,101 +369,7 @@ else if (has_capability("mod/tomaetest:attempt", $modulecontext)) {
             $decodedextradata = json_decode($moduleinstance->extradata, true);
             $checkintime = isset($decodedextradata["TETExamPublishTime"]) ? $decodedextradata["TETExamPublishTime"] : '';
         }
-        echo "<style>
-            @media (min-width: 768px) {
-                .toma-container {
-                    max-width: 830px;
-                }
-            }
-            
-            .toma-container {
-                align-self: stretch;
-                margin: 0 auto;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                gap: 20px;
-
-                font-family: Inter, sans-serif;
-            }
-
-            .toma-icon-wrapper {
-                margin: 0 auto;
-            }
-
-            .toma-not-ready-box {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 8px;
-            }
-
-            .toma-not-ready-title {
-                text-align: center;
-                color: #181D27;
-                font-size: 20px;
-                font-weight: 600;
-                line-height: 30px;
-            }
-
-            .toma-not-ready-subtitle {
-                text-align: center;
-                color: #535862;
-                font-size: 16px;
-                font-weight: 400;
-                line-height: 24px;
-            }
-
-            .toma-available-from-wrapper {
-                display: none;
-                margin-top: 16px;
-                padding: 10px 16px;
-                align-items: flex-start;
-                gap: 6px;
-                border-radius: 8px;
-                background: #F5F5F5;
-                color: #181D27;
-                text-align: center;
-                font-size: 16px;
-                font-weight: 600;
-                line-height: 24px;
-            }
-
-            .toma-prompt-wrapper {
-                margin-top: 12px;
-                padding: 24px;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                gap: 24px;
-                border-top: 1px solid #D5D7DA;
-            }
-
-            .toma-prompt-text {
-                color: #252B37;
-                text-align: center;
-                font-size: 16px;
-                font-weight: 400;
-                line-height: 24px;
-            }
-
-            .toma-primary-button {
-                padding: 10px 16px;
-                background: #1570EF;
-                border: 2px solid #F5F5F5;
-                border-radius: 8px;
-                box-shadow: 0px 0px 0px 1px rgba(10, 13, 18, 0.18) inset, 0px -2px 0px 0px  rgba(10, 13, 18, 0.05) inset, 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
-                color: white;
-                cursor: pointer;
-                font-size: 16px;
-                font-weight: 600;
-                line-height: 24px;
-            }
-        </style>
-        
-        <div class='toma-container'>
+        echo "<div class='toma-container'>
             <div class='toma-icon-wrapper'>
                 <svg width='56' height='56' viewBox='0 0 56 56' fill='none' xmlns='http://www.w3.org/2000/svg'>
                     <path d='M0 28C0 12.536 12.536 0 28 0C43.464 0 56 12.536 56 28C56 43.464 43.464 56 28 56C12.536 56 0 43.464 0 28Z' fill='#F5F5F5'/>
@@ -1142,151 +424,7 @@ else if (has_capability("mod/tomaetest:attempt", $modulecontext)) {
         $activityid = $moduleinstance->id;
         $cmid = $cm->id;
         $vixurl = new moodle_url('/mod/tomaetest/misc/openVIX.php', array('activityid' => $activityid, 'cmid' => $cmid));
-        echo "<style>
-            @media (min-width: 768px) {
-                .toma-container {
-                    max-width: 830px;
-                }
-            }
-            
-            .toma-container {
-                align-self: stretch;
-                margin: 0 auto;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                gap: 32px;
-
-                font-family: Inter, sans-serif;
-            }
-
-            .toma-sub-container {
-                align-self: stretch;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                gap: 20px;
-            }
-
-            .toma-icon-wrapper {
-                margin: 0 auto;   
-            }
-
-            .toma-ready-box {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 8px;
-            }
-
-            .toma-ready-title {
-                text-align: center;
-                color: #181D27;
-                font-size: 20px;
-                font-weight: 600;
-                line-height: 30px;
-            }
-
-            .toma-ready-subtitle {
-                text-align: center;
-                color: #000000;
-                font-size: 16px;
-                font-weight: 400;
-                line-height: 24px;
-            }
-
-            [dir='rtl'] .toma-steps-box {
-                border-right: 6px solid #1570EF;
-            }
-
-            .toma-steps-box {
-                border-left: 6px solid #1570EF;
-                align-self: stretch;
-                padding: 20px 24px;
-                background: #EFF8FF;
-                border-radius: 6px;
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-start;
-                gap: 24px;
-            }
-
-            .toma-step-wrapper {
-                display: flex;
-                align-items: flex-start;
-                gap: 16px;
-            }
-
-            .toma-step-number {
-                display: flex;
-                flex-shrink: 0;
-                width: 24px;
-                height: 24px;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                border-radius: 20px;
-                background: #1570EF;
-                color: #FFF;
-                text-align: center;
-                font-size: 16px;
-                font-weight: 600;
-                line-height: 24px;
-            }
-            
-            .toma-step-content {
-                display: flex;
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 2px;
-                font-size: 16px;
-                line-height: 24px;
-            }
-
-            .toma-step-title {
-                color: #181D27;
-                font-weight: 600;
-            }
-
-            .toma-step-subtitle {
-                color: #000;
-                font-weight: 400;
-            }
-
-            .toma-buttons-container {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 12px;
-            }
-
-            .toma-primary-button {
-                padding: 10px 16px;
-                background: #1570EF;
-                border: 2px solid #F5F5F5;
-                border-radius: 8px;
-                box-shadow: 0px 0px 0px 1px rgba(10, 13, 18, 0.18) inset, 0px -2px 0px 0px  rgba(10, 13, 18, 0.05) inset, 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
-                color: white;
-                cursor: pointer;
-                font-size: 16px;
-                font-weight: 600;
-                line-height: 24px;
-            }
-
-            .toma-plain-button {
-                color: #175CD3;
-                font-size: 16px;
-                font-weight: 600;
-                line-height: 24px;
-                background: transparent;
-                border: none;
-                cursor: pointer;
-            }
-        </style>
-        
-        <div class='toma-container'>
+        echo "<div class='toma-container' style='gap: 32px'>
             <div class='toma-sub-container'>
                 <div class='toma-icon-wrapper'>
                     <svg width='56' height='56' viewBox='0 0 56 56' fill='none' xmlns='http://www.w3.org/2000/svg'>

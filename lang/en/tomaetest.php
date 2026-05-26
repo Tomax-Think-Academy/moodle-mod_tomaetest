@@ -85,3 +85,8 @@ $string['activityreadystep2subtitle'] = 'Once VIX is installed, click the "Open 
 $string['activityreadystep3title'] = 'Complete and Submit Your Activity';
 $string['activityreadystep3subtitle'] = 'Follow the instructions in VIX to complete your activity. Make sure to submit your activity before the deadline.';
 $string['openinvix'] = 'Open Activity in VIX';
+
+$string['viewgradednotebook'] = 'View Graded Notebook';
+$string['notebooknotready'] = 'The graded notebook is not available yet.';
+$string['notebookdeleted'] = 'The graded notebook has been deleted.';
+$string['contactadmin'] = 'An error occurred. Please contact your administrator.';

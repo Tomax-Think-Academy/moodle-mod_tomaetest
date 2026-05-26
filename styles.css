@@ -2,3 +2,413 @@
 .activityiconcontainer.tomax {
     background-color: #50D69B;
 }
+
+/* ── View page shared styles ── */
+@media (min-width: 768px) {
+    .toma-container {
+        max-width: 830px;
+    }
+}
+
+.toma-container {
+    align-self: stretch;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    font-family: Inter, sans-serif;
+}
+
+.toma-icon-wrapper {
+    margin: 0 auto;
+}
+
+.toma-sub-container {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Buttons */
+.toma-button-container {
+    display: flex;
+    justify-content: start;
+}
+
+.toma-buttons-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.toma-primary-button {
+    padding: 10px 16px;
+    background: #1570EF;
+    border: 2px solid #F5F5F5;
+    border-radius: 8px;
+    box-shadow: 0px 0px 0px 1px rgba(10, 13, 18, 0.18) inset, 0px -2px 0px 0px rgba(10, 13, 18, 0.05) inset, 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+}
+
+.toma-primary-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.toma-plain-button {
+    color: #175CD3;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+/* Status bars */
+[dir='rtl'] .toma-warning-box {
+    border-right: 6px solid #FDB022;
+}
+
+.toma-warning-box {
+    border-left: 6px solid #FDB022;
+    align-self: stretch;
+    padding: 12px 20px;
+    background: #FEF0C7;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 8px;
+}
+
+[dir='rtl'] .toma-success-box {
+    border-right: 6px solid #47CD89;
+}
+
+.toma-success-box {
+    border-left: 6px solid #47CD89;
+    align-self: stretch;
+    padding: 12px 20px;
+    background: #ECFDF3;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 8px;
+}
+
+.toma-status-container {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    color: black;
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.toma-status-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 6px;
+}
+
+.toma-status-label {
+    font-weight: 600;
+}
+
+.toma-status-text,
+.toma-status-message {
+    font-weight: 400;
+}
+
+/* Management box */
+.toma-management-box {
+    align-self: stretch;
+    padding: 24px;
+    border-radius: 12px;
+    border: 1px solid #D5D7DA;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+}
+
+.toma-management-text {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    color: black;
+}
+
+.toma-management-title {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 30px;
+}
+
+.toma-management-description {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+}
+
+.toma-management-cards {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    align-self: stretch;
+    color: black;
+}
+
+.toma-card {
+    align-self: stretch;
+    display: flex;
+    padding: 12px;
+    align-items: flex-start;
+    gap: 20px;
+    flex: 1 0 0;
+    border-radius: 8px;
+    border: 1px solid #D5D7DA;
+    background: #FAFAFA;
+}
+
+.toma-info-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+.toma-info-label {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+.toma-info-value {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+}
+
+.toma-info-note {
+    color: #717680;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+/* Notes box */
+.toma-notes-box {
+    align-self: stretch;
+    padding: 24px;
+    background: #F5F5F5;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    color: #181D27;
+}
+
+.toma-notes-title {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 28px;
+}
+
+.toma-notes-text {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+}
+
+/* Finished state */
+.toma-finished-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.toma-finished-title {
+    text-align: center;
+    color: #181D27;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 30px;
+}
+
+.toma-finished-subtitle {
+    text-align: center;
+    color: #535862;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+}
+
+/* Not ready / not available state */
+.toma-not-ready-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.toma-not-ready-title {
+    text-align: center;
+    color: #181D27;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 30px;
+}
+
+.toma-not-ready-subtitle {
+    text-align: center;
+    color: #535862;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+}
+
+.toma-note-wrapper {
+    margin-top: 12px;
+}
+
+.toma-note-text {
+    text-align: center;
+    color: #535862;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+}
+
+/* Ready state */
+.toma-ready-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.toma-ready-title {
+    text-align: center;
+    color: #181D27;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 30px;
+}
+
+.toma-ready-subtitle {
+    text-align: center;
+    color: #000000;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+}
+
+/* Available from */
+.toma-available-from-wrapper {
+    display: none;
+    margin-top: 16px;
+    padding: 10px 16px;
+    align-items: flex-start;
+    gap: 6px;
+    border-radius: 8px;
+    background: #F5F5F5;
+    color: #181D27;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+}
+
+/* Download prompt */
+.toma-prompt-wrapper {
+    margin-top: 12px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    border-top: 1px solid #D5D7DA;
+}
+
+.toma-prompt-text {
+    color: #252B37;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+}
+
+/* Steps */
+[dir='rtl'] .toma-steps-box {
+    border-right: 6px solid #1570EF;
+}
+
+.toma-steps-box {
+    border-left: 6px solid #1570EF;
+    align-self: stretch;
+    padding: 20px 24px;
+    background: #EFF8FF;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 24px;
+}
+
+.toma-step-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.toma-step-number {
+    display: flex;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    background: #1570EF;
+    color: #FFF;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+}
+
+.toma-step-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.toma-step-title {
+    color: #181D27;
+    font-weight: 600;
+}
+
+.toma-step-subtitle {
+    color: #000;
+    font-weight: 400;
+}

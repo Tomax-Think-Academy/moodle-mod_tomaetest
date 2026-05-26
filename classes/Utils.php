@@ -250,11 +250,11 @@ class tet_utils
         $tetcourseobject["Attributes"] = $attributes;
 
         $res = self::create_tet_user($user->id);
-        if ($res != true) {
+        if ($res !== true) {
             throw new moodle_exception('tetgeneralerror', 'mod_tomaetest', '', '', $res);
         }
         $res = self::create_tg_user($user->id);
-        if ($res != true) {
+        if ($res !== true) {
             throw new moodle_exception('tggeneralerror', 'mod_tomaetest', '', '', $res);
         }
 
