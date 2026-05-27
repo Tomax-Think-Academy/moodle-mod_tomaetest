@@ -30,8 +30,8 @@ class tet_utils
         return
             array_map(function ($student) {
                 $newstudent = new stdClass();
-                $newstudent->TETParticipantFirstName = $student->firstname;
-                $newstudent->TETParticipantLastName = $student->lastname;
+                $newstudent->TETParticipantFirstName = tomax_utils::get_user_firstname($student);
+                $newstudent->TETParticipantLastName = tomax_utils::get_user_lastname($student);
                 $newstudent->TETParticipantPhone = $student->phone1;
                 $newstudent->TETParticipantEmail = $student->email;
                 $newstudent->TETParticipantIdentity = tomax_utils::get_external_id_for_participant($student);
@@ -47,9 +47,9 @@ class tet_utils
             // TODORON: change to role based on role in moodle
             $newuser->TETExternalID = tomax_utils::get_external_id_for_teacher($user);
             $newuser->UserName = tomax_utils::get_external_id_for_teacher($user);
-            $newuser->TETUserLastName = $user->lastname;
+            $newuser->TETUserLastName = tomax_utils::get_user_lastname($user);
             $newuser->TETUserEmail = $user->email;
-            $newuser->TETUserFirstName = $user->firstname;
+            $newuser->TETUserFirstName = tomax_utils::get_user_firstname($user);
             $newuser->TETUserPhone = $user->phone1;
 
             return $newuser;
@@ -80,19 +80,12 @@ class tet_utils
         } else {
             $tetuserid = $tetuserresponse["data"]["Entity"];
         }
-        $tetroleresponse = tet_connection::tet_post_request("role/getByName/view", ["Name" => $rolename]);
-
-        if (!$tetroleresponse["success"]) {
-            return "Could not find role in TET.";
-        }
-        $roleid = $tetroleresponse["data"]["Entity"]["ID"];
-        $responseconnect = tet_connection::tet_post_request("user/edit?ID=" . $tetuserid, [
-            "ID" => $tetuserid,
-            "Attributes" => new stdClass(),
-            "Roles" => ["Delete" => [], "Insert" => [$roleid]]
+        $responseconnect = tet_connection::tet_post_request("user/role/edit", [
+            "UserID"   => $tetuserid,
+            "RoleName" => $rolename,
         ]);
         if (!$responseconnect["success"]) {
-            return "could not add role for user.";
+            return "could not edit role for user.";
         }
         return true;
     }
@@ -112,8 +105,8 @@ class tet_utils
         $newuser = array();
         $newuser['Email'] = $user->email;
         $newuser['Cellular_Phone_Number'] = $user->phone1;
-        $newuser['FirstName'] = $user->firstname;
-        $newuser['LastName'] = $user->lastname;
+        $newuser['FirstName'] = tomax_utils::get_user_firstname($user);
+        $newuser['LastName'] = tomax_utils::get_user_lastname($user);
         $newuser['RoleID'] = 0;
         $newuser['TeacherCode'] = $userexternalid;
         $newuser['IsOTP'] = 0;
@@ -240,7 +233,7 @@ class tet_utils
         $tetcourseobject = [];
         $tetcourseobject["UserExternalID"] = tomax_utils::get_external_id_for_teacher($user);
         $attributes = [];
-        $attributes["TETCourseName"] = $course->fullname;
+        $attributes["TETCourseName"] = tomax_utils::get_course_name($course);
         $attributes["TETCourseNumber"] = intval($course->id);
         $attributes["TETCourseStartDate"] = date("d/m/Y", $course->startdate);
         $attributes["TETCourseEndDate"] = (isset($course->enddate) && $course->enddate != 0) ? date("d/m/Y", $course->enddate) : "";
