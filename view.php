@@ -237,6 +237,18 @@ if (has_capability("mod/tomaetest:manage", $modulecontext)) {
     }
     else { // activity is finished
         $url = new moodle_url('/mod/tomaetest/misc/sso.php', array('courseid' => $courseid, 'location' => $location));
+        $reseturl = new moodle_url('/mod/tomaetest/misc/reset_grades_sync.php', array('cmid' => $cm->id, 'sesskey' => sesskey()));
+        $confirmstr = addslashes_js(get_string('resetgradingstatusconfirm', 'mod_tomaetest'));
+        $resetbutton = $moduleinstance->is_graded
+            ? "<a href='$reseturl' onclick=\"return confirm('$confirmstr')\">
+                    <button class='toma-plain-button'>
+                        <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 22 20' fill='none' stroke='currentColor'>
+                            <path d='M1 12C1 12 1.12132 12.8492 4.63604 16.364C8.15076 19.8787 13.8492 19.8787 17.364 16.364C18.6092 15.1187 19.4133 13.5993 19.7762 12M7 12H1V18M21 8C21 8 20.8787 7.15076 17.364 3.63604C13.8492 0.12132 8.15076 0.12132 4.63604 3.63604C3.39076 4.88131 2.58669 6.40072 2.22383 8M15 8H21V2' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/>
+                        </svg>
+                        " . get_string('resetgradingstatus', 'mod_tomaetest') . "
+                    </button>
+                </a>"
+            : "";
         echo "<div class='toma-container'>
             <div class='toma-icon-wrapper'>
                 <svg width='56' height='56' viewBox='0 0 56 56' fill='none' xmlns='http://www.w3.org/2000/svg'>
@@ -248,8 +260,9 @@ if (has_capability("mod/tomaetest:manage", $modulecontext)) {
                 <span class='toma-finished-title'>".get_string('activityfinished', 'mod_tomaetest')."</span>
                 <span class='toma-finished-subtitle'>".get_string('activityfinisheddescription', 'mod_tomaetest')."</span>
             </div>
-            <div class='toma-button-container'>
+            <div class='toma-buttons-container'>
                 <button class='toma-primary-button' onclick=\"window.open('$url', '_blank')\">".get_string('openinassessmentstudio', 'mod_tomaetest')."</button>
+                $resetbutton
             </div>
         </div>";
     }

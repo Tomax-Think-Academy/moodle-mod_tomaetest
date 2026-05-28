@@ -90,3 +90,7 @@ $string['viewgradednotebook'] = 'View Graded Notebook';
 $string['notebooknotready'] = 'The graded notebook is not available yet.';
 $string['notebookdeleted'] = 'The graded notebook has been deleted.';
 $string['contactadmin'] = 'An error occurred. Please contact your administrator.';
+
+$string['resetgradingstatus'] = 'Reset Grading Status';
+$string['resetgradingstatusconfirm'] = 'Are you sure you want to reset the grading status? The grades will be re-synced from TomaGrade immediately.';
+$string['resetgradingstatussuccess'] = 'Grading status reset. Grades have been re-synced from TomaGrade.';

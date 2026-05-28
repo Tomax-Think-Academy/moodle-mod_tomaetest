@@ -60,6 +60,10 @@
     line-height: 24px;
 }
 
+.toma-primary-button:hover {
+    background-color: #175CD3;
+}
+
 .toma-primary-button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
@@ -73,6 +77,10 @@
     background: transparent;
     border: none;
     cursor: pointer;
+}
+
+.toma-plain-button:hover {
+    color: #1849A9;
 }
 
 /* Status bars */

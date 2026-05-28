@@ -90,3 +90,7 @@ $string['viewgradednotebook'] = 'צפייה במחברת הבחינה שנבדק
 $string['notebooknotready'] = 'מחברת הבחינה עדיין אינה זמינה.';
 $string['notebookdeleted'] = 'מחברת הבחינה נמחקה.';
 $string['contactadmin'] = 'אירעה שגיאה. אנא פנה למנהל המערכת.';
+
+$string['resetgradingstatus'] = 'איפוס סטטוס ציונים';
+$string['resetgradingstatusconfirm'] = 'האם אתה בטוח שברצונך לאפס את סטטוס הציונים? הציונים יסונכרנו מחדש מ־TomaGrade באופן מיידי.';
+$string['resetgradingstatussuccess'] = 'סטטוס הציונים אופס. הציונים סונכרנו מחדש מ־TomaGrade.';
